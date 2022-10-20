@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = 'http://localhost:8085/richpwd/api/auth/'
+const API_URL = 'http://localhost:8085/richpwd/auth/'
 
 class AuthService {
     login (user) {

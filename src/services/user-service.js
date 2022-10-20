@@ -1,7 +1,7 @@
 import axios from 'axios'
 import authHeader from './auth-header'
 
-const API_URL = 'http://localhost:8085/richpwd/api/test/'
+const API_URL = 'http://localhost:8085/richpwd/test/'
 
 class UserService {
     getPublicContent () {
