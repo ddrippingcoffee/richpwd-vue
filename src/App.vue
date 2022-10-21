@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <nav class="navbar navbar-expand navbar-dark bg-dark">
-      <a href="/" class="navbar-brand">bezKoder</a>
+      <a href="/" class="navbar-brand">Larry</a>
       <div class="navbar-nav mr-auto">
         <li class="nav-item">
           <router-link to="/home" class="nav-link">
@@ -92,7 +92,9 @@ export default {
     })
   },
   beforeUnmount () {
-    EventBus.remove('logout')
+    EventBus.remove('logout', () => {
+      console.log('call beforeUnmount')
+    })
   }
 }
 </script>
