@@ -99,7 +99,6 @@ export default {
       this.message = ''
       this.successful = false
       this.loading = true
-      user.role = ['user'] // 'mod','admin'
 
       this.$store.dispatch('auth/register', user).then(
           (data) => {

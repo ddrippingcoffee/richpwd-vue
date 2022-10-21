@@ -1,4 +1,4 @@
-import { createWebHistory, createRouter } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from './components/HomePage.vue'
 import LoginPage from './components/LoginPage.vue'
 import RegisterPage from './components/RegisterPage.vue'
@@ -65,7 +65,6 @@ router.beforeEach((to, from, next) => {
     // trying to access a restricted page + not logged in
     // redirect to login page
     if (authRequired && !loggedIn) {
-        console.log('redirect to login page')
         next('/login')
     } else {
         next()
