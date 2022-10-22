@@ -1,12 +1,18 @@
 <template>
   <div id="app">
     <nav class="navbar navbar-expand navbar-dark bg-dark">
-      <a href="/" class="navbar-brand">Larry</a>
+      <a href="/" class="navbar-brand">Rich Pwd</a>
       <div class="navbar-nav mr-auto">
         <li class="nav-item">
           <router-link to="/home" class="nav-link">
             <font-awesome-icon icon="home"/>
             Home
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link v-if="currentUser" to="/cominfo" class="nav-link">
+            <font-awesome-icon icon="industry"/>
+            Cominfo
           </router-link>
         </li>
         <li v-if="showAdminBoard" class="nav-item">

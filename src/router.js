@@ -7,6 +7,7 @@ const ProfilePage = () => import('./components/ProfilePage.vue')
 const BoardAdmin = () => import('./components/BoardAdmin.vue')
 const BoardModerator = () => import('./components/BoardModerator.vue')
 const BoardUser = () => import('./components/BoardUser.vue')
+const ComInfo = () => import('./components/ComInfo.vue')
 
 const routes = [
     {
@@ -50,6 +51,11 @@ const routes = [
         // lazy-loaded
         component: BoardUser,
     },
+    {
+        path: '/cominfo',
+        name: 'cominfo',
+        component: ComInfo,
+    }
 ]
 
 const router = createRouter({
