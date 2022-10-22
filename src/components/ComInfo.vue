@@ -26,13 +26,15 @@
     </div>
     <div class="col-md-8">
       <button class="btn btn-outline-primary"
-              v-if="!toAdd && !toEdit"
+              v-if="!toAdd && !toEdit && this.roleArr.includes('ROLE_ADMIN')"
               @click="toAddPage">新增
       </button>
       <div v-if="isShow">
         <div v-if="currCom">
-          <br/>
-          <button class="btn btn-outline-info" @click="toEditPage">編輯</button>
+          <button class="btn btn-outline-secondary"
+                  v-if="this.roleArr.includes('ROLE_ADMIN')"
+                  @click="toEditPage">編輯
+          </button>
           <br/><br/>
           <div><label><strong>Symbol:</strong></label> {{ currCom.symb }}</div>
           <br/>
@@ -48,9 +50,16 @@
           <br/>
           <div><label><strong>相關概念 :</strong></label> {{ currCom.comCep }}</div>
           <br/>
-          <div><label><strong>官方網站 :</strong></label> {{ currCom.comOfcl }}</div>
+          <div><label><strong>官方網站 :</strong></label>
+            <div v-if="currCom.comOfcl">
+              <a href="{{currCom.comOfcl}}">{{ currCom.comOfcl }}</a>
+            </div>
+          </div>
           <br/><br/>
-          <button class="btn btn-outline-danger" @click="deleteCom(currCom.symb)">刪除</button>
+          <button class="btn btn-outline-danger"
+                  v-if="this.roleArr.includes('ROLE_ADMIN')"
+                  @click="deleteCom(currCom.symb)">刪除
+          </button>
         </div>
         <div v-else>
           <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
@@ -58,7 +67,7 @@
         </div>
       </div>
       <div v-if="toAdd">
-        新增頁
+        <strong>Create</strong>
         <div class="form-group">
           <br/>
           <div class="col-sm-4">
@@ -115,8 +124,58 @@
         <button class="btn btn-success" @click="saveCom">儲存</button>
       </div>
       <div v-if="toEdit">
-        編輯頁
+        <strong>Update</strong>
+        <div class="form-group">
+          <br/>
+          <div class="col-auto">
+            <label><strong>Symbol:</strong></label> {{ currCom.symb }}
+          </div>
+          <br/>
+          <div class="col-auto">
+            簡稱 :
+            <input id="comNm" name="comNm" type="text"
+                   class="form-control"
+                   v-model="currCom.comNm"/>
+          </div>
+          <div class="col-auto">
+            市場別 :
+            <input id="comType" name="comType" type="text"
+                   class="form-control"
+                   v-model="currCom.comType"/>
+          </div>
+          <div class="col-auto">
+            產業別 :
+            <input id="comIndus" name="comIndus" type="text"
+                   class="form-control"
+                   v-model="currCom.comIndus"/>
+          </div>
+          <div class="col-auto">
+            主要業務 :
+            <input id="comMain" name="comMain" type="text"
+                   class="form-control"
+                   v-model="currCom.comMain"/>
+          </div>
+          <div class="col-auto">
+            相關產業 :
+            <input id="comCoted" name="comCoted" type="text"
+                   class="form-control"
+                   v-model="currCom.comCoted"/>
+          </div>
+          <div class="col-auto">
+            相關概念 :
+            <input id="comCep" name="comCep" type="text"
+                   class="form-control"
+                   v-model="currCom.comCep"/>
+          </div>
+          <div class="col-auto">
+            官方網站 :
+            <input id="comOfcl" name="comOfcl" type="text"
+                   class="form-control"
+                   v-model="currCom.comOfcl"/>
+          </div>
+        </div>
         <button class="btn btn-outline-info" @click="toShowPage">取消</button>
+        <button class="btn btn-success" @click="updateCom">更新</button>
       </div>
     </div>
   </div>
@@ -136,7 +195,8 @@ export default {
       toAdd: false,  // 新增
       toEdit: false, // 編輯
       toDel: false,  // 刪除
-      newCom: this.initComInfo()
+      newCom: this.initComInfo(),
+      roleArr: this.$store.state.auth.user.roles
     }
   },
   methods: {
@@ -144,6 +204,7 @@ export default {
       ComInfoService.getAll()
       .then((res) => {
         this.comList = res.data
+        this.sortComInfo()
       }, (error) => {
         alert('取得資料失敗:' + error)
       })
@@ -194,33 +255,62 @@ export default {
       this.toAdd = false
       this.toEdit = true
     },
+    updateCom () {
+      let comSymb = this.currCom.symb
+      let com = {
+        comNm: this.currCom.comNm,
+        comType: this.currCom.comType,
+        comIndus: this.currCom.comIndus,
+        comMain: this.currCom.comMain,
+        comCoted: this.currCom.comCoted,
+        comCep: this.currCom.comCep,
+        comOfcl: this.currCom.comOfcl
+      }
+      ComInfoService.updateCom(comSymb, com).then((res) => {
+            if (200 === res.status) {
+              this.comList.splice(this.comList.indexOf(this.comList[this.currIndex]), 1)
+              com.symb = comSymb
+              this.comList.push(com)
+              this.currIndex = this.comList.length - 1
+              this.currCom = com
+              this.toShowPage()
+            } else {
+              alert('更新失敗')
+            }
+          }, (error) => {
+            alert('錯誤請檢查:' + error)
+          }
+      )
+    },
     toShowPage () {
       this.isShow = true
       this.toAdd = false
       this.toEdit = false
     },
     deleteCom (currSymb) {
-      console.log('TODO deleteCom :' + currSymb)
-      // ComInfoService.deleteCom(currSymb).then((res) => {
-      //   if (1 === res.data) {
-      //     this.comList.splice(this.comList.indexOf(this.comList[this.currIndex]), 1)
-      //     this.currCom = null
-      //     this.currIndex = -1
-      //     this.toAdd = false
-      //     this.toEdit = false
-      //     this.toDel = false
-      //   } else {
-      //     alert('刪除失敗')
-      //   }
-      // }, (error) => {
-      //   alert('錯誤請檢查:' + error)
-      // })
+      ComInfoService.deleteCom(currSymb).then((res) => {
+        if (1 === res.data) {
+          this.comList.splice(this.comList.indexOf(this.comList[this.currIndex]), 1)
+          this.currCom = null
+          this.currIndex = -1
+          this.toAdd = false
+          this.toEdit = false
+          this.toDel = false
+        } else {
+          alert('刪除失敗')
+        }
+      }, (error) => {
+        alert('錯誤請檢查:' + error)
+      })
     },
     initComInfo () {
       return {
         symb: '', comNm: '', comType: '', comIndus: '',
         comMain: '', comCoted: '', comCep: '', comOfcl: ''
       }
+    },
+    sortComInfo () {
+      return this.comList.sort((a, b) => a.symb - b.symb)
     },
     cogSymb (val) {
       console.log('call cogSymb' + val)
