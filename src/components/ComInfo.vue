@@ -10,7 +10,6 @@
     <input id="main" type="text" class="col-auto" placeholder="主要業務" v-on:input="cogMain($event.target.value)"/>
     <input id="coted" type="text" class="col-auto" placeholder="相關產業" v-on:input="cogCoted($event.target.value)"/>
     <input id="cep" type="text" class="col-auto" placeholder="相關概念" v-on:input="cogCep($event.target.value)"/>
-    <!--    <input id="ofcl" type="text" class="col-sm-1" placeholder="官網" v-on:input="cogOfcl($event.target.value)"/>-->
   </div>
   <br/>
   <div class="row">
@@ -244,9 +243,6 @@ export default {
     cogCep (val) {
       console.log('call cogCep' + val)
     },
-    // cogOfcl(event) {
-    //   console.log('call cogOfcl' + event);
-    // }
   },
   mounted () {
     this.getAll()
