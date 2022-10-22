@@ -9,9 +9,13 @@ class ComInfoService {
         return api.post('/cominfo/', com)
     }
 
-    // deleteCom (comSymb) {
-    //     return api.delete('/cominfo/' + comSymb + '/')
-    // }
+    updateCom (comSymb, com) {
+        return api.put('/cominfo/' + comSymb + '/', com)
+    }
+
+    deleteCom (comSymb) {
+        return api.delete('/cominfo/' + comSymb + '/')
+    }
 }
 
 export default new ComInfoService()
