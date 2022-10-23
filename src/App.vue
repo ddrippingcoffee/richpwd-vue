@@ -16,6 +16,9 @@
           </router-link>
         </li>
         <li v-if="showAdminBoard" class="nav-item">
+          <router-link to="/entry" class="nav-link">Stock Entry</router-link>
+        </li>
+        <li v-if="showAdminBoard" class="nav-item">
           <router-link to="/admin" class="nav-link">Admin Board</router-link>
         </li>
         <li v-if="showModeratorBoard" class="nav-item">

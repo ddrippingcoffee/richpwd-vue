@@ -8,6 +8,7 @@ const BoardAdmin = () => import('./components/BoardAdmin.vue')
 const BoardModerator = () => import('./components/BoardModerator.vue')
 const BoardUser = () => import('./components/BoardUser.vue')
 const ComInfo = () => import('./components/ComInfo.vue')
+const StEntry = () => import('./components/StEntry.vue')
 
 const routes = [
     {
@@ -55,6 +56,11 @@ const routes = [
         path: '/cominfo',
         name: 'cominfo',
         component: ComInfo,
+    },
+    {
+        path: '/entry',
+        name: 'entry',
+        component: StEntry,
     }
 ]
 
