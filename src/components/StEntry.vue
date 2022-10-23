@@ -47,9 +47,7 @@
       <h3>Create Stock Entry</h3>
       <div class="form-group">
         <button class="btn btn-outline-info" @click="toggleAddPage">取消</button>
-        <button class="btn btn-success" @click="saveEntry">儲存</button>
-        <br/><br/>
-        <StEntryAdd/>
+        <StEntryAdd @newEntryData="saveEntry($event)"/>
       </div>
     </div>
     <div class="col col-lg-2" v-if="!toAdd">
@@ -71,8 +69,7 @@ export default {
   data () {
     return {
       activeEntryList: [],
-      toAdd: false,  // 新增
-      stEntryAddData: {}
+      toAdd: false,
     }
   },
   components: {
@@ -102,8 +99,12 @@ export default {
         alert('不刪除')
       }
     },
-    saveEntry () {
-      console.log(StEntryAdd.data())
+    saveEntry (allAddData) {
+      StEntryService.save(JSON.stringify(allAddData)).then(c8tDtm => {
+        allAddData['c8tDtm'] = c8tDtm.substring(0, 19)
+        this.activeEntryList.unshift(allAddData)
+        this.toggleAddPage()
+      })
     }
   },
   mounted () {

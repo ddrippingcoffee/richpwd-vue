@@ -3,7 +3,12 @@ import api from './api'
 class StEntryService {
 
     save (stEntry) {
-        return api.post('/entry/', stEntry)
+        return api.post('/entry/', stEntry).then(
+            (res) => {
+                return res.data
+            }, (error) => {
+                alert('Stock Entry 新增失敗:' + error)
+            })
     }
 
     getAllActiveEntry () {
