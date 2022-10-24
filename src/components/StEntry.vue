@@ -93,8 +93,7 @@ export default {
     },
     deleteEntry (symb, c8tDtm) {
       if (confirm('確定刪除??')) {
-        console.log(symb)
-        console.log(c8tDtm)
+        StEntryService.deleteActiveEntry(symb, c8tDtm)
       } else {
         alert('不刪除')
       }
