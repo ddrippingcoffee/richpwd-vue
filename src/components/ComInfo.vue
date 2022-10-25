@@ -1,16 +1,16 @@
 <template>
-  <br/>
-  <div class="cogQy">
-    <!--  Cognitive Query  -->
-    <input id="symb" type="text" class="col-auto" placeholder="代號" v-on:input="cogSymb($event.target.value)"/>
-    <input id="nm" type="text" class="col-auto" placeholder="簡稱" v-on:input="cogNm($event.target.value)"/>
-    <input id="type" type="text" class="col-auto" placeholder="市場別" v-on:input="cogType($event.target.value)"/>
-    <br/>
-    <input id="indus" type="text" class="col-auto" placeholder="產業別" v-on:input="cogIndus($event.target.value)"/>
-    <input id="main" type="text" class="col-auto" placeholder="主要業務" v-on:input="cogMain($event.target.value)"/>
-    <input id="coted" type="text" class="col-auto" placeholder="相關產業" v-on:input="cogCoted($event.target.value)"/>
-    <input id="cep" type="text" class="col-auto" placeholder="相關概念" v-on:input="cogCep($event.target.value)"/>
-  </div>
+  <!--  Cognitive Query  -->
+  <!--  <br/>-->
+  <!--  <div class="cogQy">-->
+  <!--    <input id="symb" type="text" class="col-auto" placeholder="代號" v-on:input="cogSymb($event.target.value)"/>-->
+  <!--    <input id="nm" type="text" class="col-auto" placeholder="簡稱" v-on:input="cogNm($event.target.value)"/>-->
+  <!--    <input id="type" type="text" class="col-auto" placeholder="市場別" v-on:input="cogType($event.target.value)"/>-->
+  <!--    <br/>-->
+  <!--    <input id="indus" type="text" class="col-auto" placeholder="產業別" v-on:input="cogIndus($event.target.value)"/>-->
+  <!--    <input id="main" type="text" class="col-auto" placeholder="主要業務" v-on:input="cogMain($event.target.value)"/>-->
+  <!--    <input id="coted" type="text" class="col-auto" placeholder="相關產業" v-on:input="cogCoted($event.target.value)"/>-->
+  <!--    <input id="cep" type="text" class="col-auto" placeholder="相關概念" v-on:input="cogCep($event.target.value)"/>-->
+  <!--  </div>-->
   <br/>
   <div class="row">
     <div class="col-md-2">
@@ -52,7 +52,7 @@
           <br/>
           <div><label><strong>官方網站 :</strong></label>
             <div v-if="currCom.comOfcl">
-              <a href="{{currCom.comOfcl}}">{{ currCom.comOfcl }}</a>
+              <a :href="currCom.comOfcl" target="_blank">{{ currCom.comOfcl }}</a>
             </div>
           </div>
           <br/><br/>
@@ -304,27 +304,27 @@ export default {
     sortComInfo () {
       return this.comList.sort((a, b) => a.symb - b.symb)
     },
-    cogSymb (val) {
-      console.log('call cogSymb' + val)
-    },
-    cogNm (val) {
-      console.log('call cogNm' + val)
-    },
-    cogType (val) {
-      console.log('call cogType' + val)
-    },
-    cogIndus (val) {
-      console.log('call cogIndus' + val)
-    },
-    cogMain (val) {
-      console.log('call cogMain' + val)
-    },
-    cogCoted (val) {
-      console.log('call cogCoted' + val)
-    },
-    cogCep (val) {
-      console.log('call cogCep' + val)
-    },
+    // cogSymb (val) {
+    //   console.log('call cogSymb' + val)
+    // },
+    // cogNm (val) {
+    //   console.log('call cogNm' + val)
+    // },
+    // cogType (val) {
+    //   console.log('call cogType' + val)
+    // },
+    // cogIndus (val) {
+    //   console.log('call cogIndus' + val)
+    // },
+    // cogMain (val) {
+    //   console.log('call cogMain' + val)
+    // },
+    // cogCoted (val) {
+    //   console.log('call cogCoted' + val)
+    // },
+    // cogCep (val) {
+    //   console.log('call cogCep' + val)
+    // },
   },
   mounted () {
     ComInfoService.getAll()
