@@ -5,17 +5,18 @@
       <ul class="list-group">
         <li class="list-group-item border-top-0 border-right-0 border-left-0"
             style="border-width:5px"
-            v-for="(entry,entryIndex) in activeEntryList"
+            v-for="(comEntry,entryIndex) in activeComEntryVoList"
             :key="entryIndex">
-          <strong>{{ entry.symb }}</strong>
-          {{ entry.c8tDtm }}
+          <strong>{{ comEntry.stEntry.symb }} : {{ comEntry.comType }} {{ comEntry.comNm }}</strong><br/>
+          建立時間 : {{ comEntry.stEntry.c8tDtm }} <br/>
+          {{ comEntry.comIndus }}
           <button class="btn btn-outline-danger btn-sm float-right"
-                  @click="deleteEntry(entry.symb,entry.c8tDtm)">
+                  @click="deleteEntry(comEntry.stEntry.symb,comEntry.stEntry.c8tDtm)">
             刪除
           </button>
           <ul class="list-group">
             <li class="list-group-item border-top-0 border-right-0 border-left-0"
-                v-for="(dtl,dtlIndex) in entry.stDtlList"
+                v-for="(dtl,dtlIndex) in comEntry.stEntry.stDtlList"
                 :key="dtlIndex">
               <div v-if="'date' === dtl.dtlTy">
                 {{ dtl.dtlBrf }} : <strong>{{ dtl.dtlInfo }}</strong>
@@ -33,7 +34,7 @@
                 </div>
               </div>
               <div v-if="'link' === dtl.dtlTy">
-                <a :href="dtl.dtlInfo">{{ dtl.dtlBrf }}</a>
+                <a :href="dtl.dtlInfo" target="_blank">{{ dtl.dtlBrf }}</a>
                 <div v-if="dtl.dtlDes">
                   des : {{ dtl.dtlDes }}
                 </div>
@@ -63,12 +64,13 @@
 
 import StEntryService from '../services/stentry-service'
 import StEntryAdd from '../components/StEntryAdd.vue'
+import EventBus from '../common/EventBus'
 
 export default {
   name: 'StEntry',
   data () {
     return {
-      activeEntryList: [],
+      activeComEntryVoList: [],
       toAdd: false,
     }
   },
@@ -76,18 +78,6 @@ export default {
     StEntryAdd
   },
   methods: {
-    getAllActiveEntry () {
-      StEntryService.getAllActiveEntry()
-      .then((res) => {
-        this.activeEntryList = res.data
-        this.sortStEntry()
-      }, (error) => {
-        alert('取得資料失敗:' + error)
-      })
-    },
-    sortStEntry () {
-      return this.activeEntryList.sort((a, b) => a.c8tDtm - b.c8tDtm)
-    },
     toggleAddPage () {
       this.toAdd = !this.toAdd
     },
@@ -101,13 +91,27 @@ export default {
     saveEntry (allAddData) {
       StEntryService.save(JSON.stringify(allAddData)).then(c8tDtm => {
         allAddData['c8tDtm'] = c8tDtm.substring(0, 19)
-        this.activeEntryList.unshift(allAddData)
+        let newComEntryVo = {}
+        newComEntryVo['comNm'] = 'New'
+        newComEntryVo['comType'] = 'New'
+        newComEntryVo['comIndus'] = 'New'
+        newComEntryVo['stEntry'] = allAddData
+        this.activeComEntryVoList.unshift(newComEntryVo)
         this.toggleAddPage()
       })
     }
   },
   mounted () {
-    this.getAllActiveEntry()
+    StEntryService.getAllActiveEntry()
+    .then((res) => {
+      this.activeComEntryVoList = res.data
+    }, (error) => {
+      if (403 === error.response.status) {
+        EventBus.dispatch('logout')
+      } else {
+        alert('取得資料失敗:' + error)
+      }
+    })
   }
 }
 </script>
