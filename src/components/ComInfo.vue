@@ -183,6 +183,7 @@
 
 <script>
 import ComInfoService from '../services/cominfo-service'
+import EventBus from '../common/EventBus'
 
 export default {
   name: 'ComInfo',
@@ -200,15 +201,6 @@ export default {
     }
   },
   methods: {
-    getAll () {
-      ComInfoService.getAll()
-      .then((res) => {
-        this.comList = res.data
-        this.sortComInfo()
-      }, (error) => {
-        alert('取得資料失敗:' + error)
-      })
-    },
     setActiveCom (com, index) {
       this.currCom = com
       this.currIndex = index
@@ -335,7 +327,17 @@ export default {
     },
   },
   mounted () {
-    this.getAll()
+    ComInfoService.getAll()
+    .then((res) => {
+      this.comList = res.data
+      this.sortComInfo()
+    }, (error) => {
+      if (403 === error.response.status) {
+        EventBus.dispatch('logout')
+      } else {
+        alert('取得資料失敗:' + error)
+      }
+    })
   }
 }
 </script>
