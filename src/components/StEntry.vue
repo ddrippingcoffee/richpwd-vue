@@ -10,6 +10,18 @@
           <strong>{{ comEntry.stEntry.symb }} : {{ comEntry.comType }} {{ comEntry.comNm }}</strong><br/>
           建立時間 : {{ comEntry.stEntry.c8tDtm }} <br/>
           {{ comEntry.comIndus }}
+          <div v-for="(dbVos, dbVoIndex) in comEntry.fileDbVos" :key="dbVoIndex">
+            {{dbVos.type}}
+            <img v-if="'image/jpeg' === dbVos.type"
+                 :alt="dbVos.name"
+                 :src="'data:image/jpeg;base64,'+dbVos.base64ImgStr" />
+          </div>
+          <div v-for="(fdVos, fdVoIndex) in comEntry.fileFdVos" :key="fdVoIndex">
+            {{fdVos.type}}
+            <img v-if="'image/jpeg' === fdVos.type"
+                 :alt="fdVos.name"
+                 :src="'data:image/jpeg;base64,'+fdVos.base64ImgStr" />
+          </div>
           <button class="btn btn-outline-danger btn-sm float-right"
                   @click="deleteEntry(comEntry.stEntry.symb,comEntry.stEntry.c8tDtm)">
             刪除
