@@ -27,6 +27,10 @@ class StEntryService {
                 alert('Stock Entry 刪除失敗:' + error)
             })
     }
+
+    downloadFileFd (fileUid) {
+        return api.get('/entry/filefd/' + fileUid, { responseType: 'blob' })
+    }
 }
 
 export default new StEntryService()

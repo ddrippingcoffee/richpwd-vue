@@ -21,6 +21,7 @@
             <img v-if="fdVos.base64ImgStr"
                  :alt="fdVos.name" :src="fdVos.base64ImgStr"
                  width="100"/>
+            <span v-else class="btn btn-outline-info" @click="downloadFileFd(fdVos)">{{ fdVos.name }}</span>
           </div>
           <button class="btn btn-outline-danger btn-sm float-right"
                   @click="deleteEntry(entryIndex,comEntry.stEntry.symb,comEntry.stEntry.c8tDtm)">
@@ -190,6 +191,16 @@ export default {
         reader.readAsDataURL(file)
         reader.onload = () => resolve(reader.result)
         reader.onerror = error => reject(error)
+      })
+    },
+    downloadFileFd (file) {
+      StEntryService.downloadFileFd(file.fileUid).then(res => {
+        const blob = new Blob([res.data], { type: res.headers['content-type'] })
+        const link = document.createElement('a')
+        link.href = URL.createObjectURL(blob)
+        link.download = file.name
+        link.click()
+        URL.revokeObjectURL(link.href)
       })
     }
   },
