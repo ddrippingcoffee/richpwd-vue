@@ -35,6 +35,31 @@
                v-model.lazy="detail.dtlDes">
       </div>
     </div>
+    <div>
+      <label for="fileImg" class="btn btn-info">選擇圖片</label>
+      <input id="fileImg" type="file" multiple @change="selectImg" style="visibility:hidden;" accept="image/*"/>
+      <label for="fileXlsx" class="btn btn-info">選擇檔案</label>
+      <!-- accept=".xlsx" -->
+      <input id="fileXlsx" type="file" multiple @change="selectFile" style="visibility:hidden;"/>
+    </div>
+
+    <div v-if="0 !== fileDbVos.length">
+      選擇了 {{ fileDbVos.length }} 個 Image
+      <div v-if="fileDbVosInfo">
+        <div v-for="(img, counter) in fileDbVosInfo"
+             :key="counter">
+          {{ img.fileName }}<img :alt="img.fileName" :src="img.fileData" :title="img.fileName"/>
+        </div>
+      </div>
+    </div>
+    <div v-if="0 !== fileFdVos.length">
+      選擇了 {{ fileFdVos.length }} 個檔案
+      <div v-if="fileFdVosInfo">
+        <div v-for="(img, counter) in fileFdVosInfo"
+             :key="counter">{{ img.fileName }}
+        </div>
+      </div>
+    </div>
   </form>
 </template>
 
@@ -45,7 +70,11 @@ export default {
   data () {
     return {
       symb: '',
-      stDtlList: [{ dtlTy: '', dtlBrf: '', dtlInfo: '', dtlDes: '' }]
+      stDtlList: [{ dtlTy: '', dtlBrf: '', dtlInfo: '', dtlDes: '' }],
+      fileDbVos: [],
+      fileDbVosInfo: [],
+      fileFdVos: [],
+      fileFdVosInfo: [],
     }
   },
   methods: {
@@ -57,6 +86,27 @@ export default {
     },
     sendNewAddEntry () {
       this.$emit('newEntryData', this.$data)
+    },
+    selectImg (event) {
+      this.fileDbVos = event.target.files
+      this.fileDbVosInfo.splice(0, this.fileDbVosInfo.length)
+      for (let i = 0; i < this.fileDbVos.length; i++) {
+        this.fileDbVosInfo.push({
+          fileIdx: i,
+          fileName: this.fileDbVos[i].name,
+          fileData: URL.createObjectURL(this.fileDbVos[i])
+        })
+      }
+    },
+    selectFile (event) {
+      this.fileFdVos = event.target.files
+      this.fileFdVosInfo.splice(0, this.fileFdVosInfo.length)
+      for (let i = 0; i < this.fileFdVos.length; i++) {
+        this.fileFdVosInfo.push({
+          fileIdx: i,
+          fileName: this.fileFdVos[i].name,
+        })
+      }
     },
   }
 }

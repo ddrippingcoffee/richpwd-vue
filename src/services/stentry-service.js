@@ -3,7 +3,7 @@ import api from './api'
 class StEntryService {
 
     save (stEntry) {
-        return api.post('/entry/', stEntry).then(
+        return api.post('/entry/stores', stEntry).then(
             (res) => {
                 return res.data
             }, (error) => {
@@ -22,9 +22,7 @@ class StEntryService {
     deleteActiveEntry (symb, c8tDtm) {
         return api.put('/entry/', { 'symb': symb, 'c8tDtm': c8tDtm }).then(
             (res) => {
-                if (1 === res.data) {
-                    alert('Stock Entry 刪除成功')
-                }
+                return res
             }, (error) => {
                 alert('Stock Entry 刪除失敗:' + error)
             })
