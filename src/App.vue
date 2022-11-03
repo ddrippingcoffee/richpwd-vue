@@ -9,13 +9,13 @@
             Home
           </router-link>
         </li>
-        <li class="nav-item">
-          <router-link v-if="currentUser" to="/cominfo" class="nav-link">
+        <li v-if="currentUser" class="nav-item">
+          <router-link to="/cominfo" class="nav-link">
             <font-awesome-icon icon="industry"/>
             Cominfo
           </router-link>
         </li>
-        <li v-if="showAdminBoard" class="nav-item">
+        <li v-if="currentUser" class="nav-item">
           <router-link to="/entry" class="nav-link">Stock Entry</router-link>
         </li>
         <li v-if="showAdminBoard" class="nav-item">
@@ -24,8 +24,8 @@
         <li v-if="showModeratorBoard" class="nav-item">
           <router-link to="/mod" class="nav-link">Moderator Board</router-link>
         </li>
-        <li class="nav-item">
-          <router-link v-if="currentUser" to="/user" class="nav-link">User</router-link>
+        <li v-if="currentUser" class="nav-item">
+          <router-link to="/user" class="nav-link">User</router-link>
         </li>
       </div>
 
