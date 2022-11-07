@@ -8,6 +8,8 @@
     <span class="btn btn-sm btn-outline-dark"
           @click="addDtl" style="cursor: pointer;">
       Create New Stock Detail</span>
+    &nbsp;&nbsp;&nbsp;&nbsp; 單檔上限: <strong> {{ limitPerFile }} </strong>
+    &nbsp;&nbsp; 單次上傳: <strong> {{ limitPerReq }} </strong><br/>
     <div class="border-0"
          v-for="(detail, counter) in stDtlList"
          v-bind:key="counter"><br/>
@@ -76,6 +78,10 @@ export default {
       fileFdVos: [],
       fileFdVosInfo: [],
     }
+  },
+  props: {
+    limitPerFile: String,
+    limitPerReq: String
   },
   methods: {
     addDtl () {

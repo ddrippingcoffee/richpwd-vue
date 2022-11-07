@@ -61,7 +61,9 @@
       <h3>Create Stock Entry</h3>
       <div class="form-group">
         <button class="btn btn-outline-info" @click="toggleAddPage">取消</button>
-        <StEntryAdd @newEntryData="saveEntry($event)"/>
+        <StEntryAdd @newEntryData="saveEntry($event)"
+                    :limitPerFile="limitPerFile"
+                    :limitPerReq="limitPerReq"/>
       </div>
     </div>
     <div class="col col-lg-2" v-if="!toAdd">
@@ -86,6 +88,8 @@ export default {
     return {
       activeComEntryVoList: [],
       toAdd: false,
+      limitPerFile: '',
+      limitPerReq: '',
     }
   },
   components: {
@@ -209,7 +213,9 @@ export default {
   mounted () {
     StEntryService.getAllActiveEntry()
     .then((res) => {
-      this.activeComEntryVoList = res.data
+      this.activeComEntryVoList = res.data.stEntryList
+      this.limitPerFile = res.data.limitPerFile
+      this.limitPerReq = res.data.limitPerReq
     }, (error) => {
       if (403 === error.response.status) {
         EventBus.dispatch('logout')
