@@ -7,7 +7,7 @@ class StEntryService {
             (res) => {
                 return res.data
             }, (error) => {
-                alert('Stock Entry 新增失敗:' + error)
+                return Promise.reject(error.response)
             })
     }
 

@@ -148,6 +148,8 @@ export default {
           }
           this.setNewFilesFd(allAddData.fileFdVos)
         }
+      }, (error) => {
+        alert(error.data.message)
       })
     },
     setNewFilesDb (fileDbVos) {
