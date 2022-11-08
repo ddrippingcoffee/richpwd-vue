@@ -234,11 +234,17 @@ export default {
               alert('新增失敗')
             }
           }, (error) => {
-            if (409 === error.status) {
-              alert('Symbol : ' + com.symb + ' 重複\n請檢查')
-            } else {
-              alert('錯誤請檢查:' + error)
+            let errMsg = 'Oops! Something went wrong'
+            if (error.response.data.message) {
+              errMsg = error.response.data.message
             }
+            if (error.response.data.errors) {
+              error.response.data.errors.forEach(err => {
+                errMsg += '\n'
+                errMsg += err.defaultMessage
+              })
+            }
+            alert('錯誤 : ' + errMsg)
           }
       )
     },
@@ -270,7 +276,7 @@ export default {
               alert('更新失敗')
             }
           }, (error) => {
-            alert('錯誤請檢查:' + error)
+            alert('Oops! Something went wrong: \n' + error)
           }
       )
     },
@@ -292,7 +298,17 @@ export default {
           alert('刪除失敗')
         }
       }, (error) => {
-        alert('錯誤請檢查:' + error)
+        let errMsg = 'Oops! Something went wrong'
+        if (error.response.data.message) {
+          errMsg = error.response.data.message
+        }
+        if (error.response.data.errors) {
+          error.response.data.errors.forEach(err => {
+            errMsg += '\n'
+            errMsg += err.defaultMessage
+          })
+        }
+        alert('錯誤 : ' + errMsg)
       })
     },
     initComInfo () {
