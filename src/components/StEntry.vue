@@ -101,11 +101,24 @@ export default {
     },
     deleteEntry (entryIndex, symb, c8tDtm) {
       if (confirm('確定刪除??')) {
-        StEntryService.deleteActiveEntry(symb, c8tDtm).then((res) => {
-          if (1 === res.data) {
-            this.activeComEntryVoList.splice(this.activeComEntryVoList.indexOf(this.activeComEntryVoList[entryIndex]), 1)
-          }
-        })
+        StEntryService.deleteActiveEntry(symb, c8tDtm).then(
+            (res) => {
+              if (1 === res.data) {
+                this.activeComEntryVoList.splice(this.activeComEntryVoList.indexOf(this.activeComEntryVoList[entryIndex]), 1)
+              }
+            }, (error) => {
+              let errMsg = 'Oops! Something went wrong'
+              if (error.response.data.message) {
+                errMsg = error.response.data.message
+              }
+              if (error.response.data.errors) {
+                error.response.data.errors.forEach(err => {
+                  errMsg += '\n'
+                  errMsg += err.defaultMessage
+                })
+              }
+              alert(errMsg)
+            })
       } else {
         alert('不刪除')
       }

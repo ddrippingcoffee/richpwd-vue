@@ -15,12 +15,7 @@ class StEntryService {
     }
 
     deleteActiveEntry (symb, c8tDtm) {
-        return api.put('/entry/', { 'symb': symb, 'c8tDtm': c8tDtm }).then(
-            (res) => {
-                return res
-            }, (error) => {
-                alert('Stock Entry 刪除失敗:' + error)
-            })
+        return api.put('/entry/', { 'symb': symb, 'c8tDtm': c8tDtm })
     }
 
     downloadFileFd (fileUid) {
