@@ -116,7 +116,10 @@ export default {
       let entryObj = {}
       entryObj.symb = allAddData.symb
       entryObj.stDtlList = toRaw(allAddData.stDtlList)
-      formData.append('entryStr', JSON.stringify(entryObj))
+
+      const json = JSON.stringify(entryObj)
+      const blob = new Blob([json], { type: 'application/json' })
+      formData.append('entryJsonStr', blob)
       // 圖片資料存 DB
       for (const fileDbVo of allAddData.fileDbVos) {
         formData.append('fileDbs', fileDbVo)
@@ -125,36 +128,47 @@ export default {
       for (const fileFdVo of allAddData.fileFdVos) {
         formData.append('fileFds', fileFdVo)
       }
-      StEntryService.save(formData).then(c8tDtm => {
-        let newStEntry = {}
-        newStEntry['symb'] = allAddData['symb']
-        newStEntry['stDtlList'] = toRaw(allAddData['stDtlList'])
-        newStEntry['c8tDtm'] = c8tDtm.substring(0, 19)
-        let newComEntryVo = {}
-        newComEntryVo['comNm'] = 'New'
-        newComEntryVo['comType'] = 'New'
-        newComEntryVo['comIndus'] = 'New'
-        newComEntryVo['stEntry'] = newStEntry
-        this.activeComEntryVoList.unshift(newComEntryVo)
-        this.toggleAddPage()
+      StEntryService.save(formData).then(
+          (res) => {
+            let newStEntry = {}
+            newStEntry['symb'] = allAddData['symb']
+            newStEntry['stDtlList'] = toRaw(allAddData['stDtlList'])
+            newStEntry['c8tDtm'] = res.data.substring(0, 19)
+            let newComEntryVo = {}
+            newComEntryVo['comNm'] = 'New'
+            newComEntryVo['comType'] = 'New'
+            newComEntryVo['comIndus'] = 'New'
+            newComEntryVo['stEntry'] = newStEntry
+            this.activeComEntryVoList.unshift(newComEntryVo)
+            this.toggleAddPage()
 
-        newComEntryVo['fileDbVos'] = []
-        newComEntryVo['fileFdVos'] = []
-        if (0 !== allAddData.fileDbVos.length) {
-          for (let i = 0; i < allAddData.fileDbVos.length; i++) {
-            newComEntryVo['fileDbVos'][i] = {}
-          }
-          this.setNewFilesDb(allAddData.fileDbVos)
-        }
-        if (0 !== allAddData.fileFdVos.length) {
-          for (let i = 0; i < allAddData.fileFdVos.length; i++) {
-            newComEntryVo['fileFdVos'][i] = {}
-          }
-          this.setNewFilesFd(allAddData.fileFdVos)
-        }
-      }, (error) => {
-        alert(error.data.message)
-      })
+            newComEntryVo['fileDbVos'] = []
+            newComEntryVo['fileFdVos'] = []
+            if (0 !== allAddData.fileDbVos.length) {
+              for (let i = 0; i < allAddData.fileDbVos.length; i++) {
+                newComEntryVo['fileDbVos'][i] = {}
+              }
+              this.setNewFilesDb(allAddData.fileDbVos)
+            }
+            if (0 !== allAddData.fileFdVos.length) {
+              for (let i = 0; i < allAddData.fileFdVos.length; i++) {
+                newComEntryVo['fileFdVos'][i] = {}
+              }
+              this.setNewFilesFd(allAddData.fileFdVos)
+            }
+          }, (error) => {
+            let errMsg = 'Oops! Something went wrong'
+            if (error.response.data.message) {
+              errMsg = error.response.data.message
+            }
+            if (error.response.data.errors) {
+              error.response.data.errors.forEach(err => {
+                errMsg += '\n'
+                errMsg += err.defaultMessage
+              })
+            }
+            alert(errMsg)
+          })
     },
     setNewFilesDb (fileDbVos) {
       for (let i = 0; i < fileDbVos.length; i++) {

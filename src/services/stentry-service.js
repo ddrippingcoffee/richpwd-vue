@@ -3,12 +3,7 @@ import api from './api'
 class StEntryService {
 
     save (stEntry) {
-        return api.post('/entry/stores', stEntry).then(
-            (res) => {
-                return res.data
-            }, (error) => {
-                return Promise.reject(error.response)
-            })
+        return api.post('/entry/stores', stEntry)
     }
 
     getAllActiveEntry () {
