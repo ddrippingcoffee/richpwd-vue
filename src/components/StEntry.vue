@@ -10,18 +10,26 @@
           <strong>{{ comEntry.stEntry.symb }} : {{ comEntry.comType }} {{ comEntry.comNm }}</strong><br/>
           建立時間 : {{ comEntry.stEntry.c8tDtm }} <br/>
           {{ comEntry.comIndus }}
-          <div v-for="(dbVos, dbVoIndex) in comEntry.fileDbVos" :key="dbVoIndex">
-            {{ dbVos.type }} : {{ dbVos.name }}
-            <img v-if="dbVos.base64ImgStr"
-                 :alt="dbVos.name" :src="dbVos.base64ImgStr"
-                 width="100"/>
+          <!-- DB 資料 -->
+          <div v-for="(fileDbInfo, fileDbInfoIndex) in comEntry.fileDbInfoList" :key="fileDbInfoIndex">
+            {{ fileDbInfo.dbFileTy }} : {{ fileDbInfo.dbFileNm }}
+            <a v-if="fileDbInfo.base64ImgStr"
+               :href="fileDbInfo.base64ImgStr" :download="fileDbInfo.dbFileNm">
+              <img :alt="fileDbInfo.dbFileNm" :src="fileDbInfo.base64ImgStr"
+                   width="100"/>
+            </a>
           </div>
-          <div v-for="(fdVos, fdVoIndex) in comEntry.fileFdVos" :key="fdVoIndex">
-            {{ fdVos.type }} : {{ fdVos.name }}
-            <img v-if="fdVos.base64ImgStr"
-                 :alt="fdVos.name" :src="fdVos.base64ImgStr"
-                 width="100"/>
-            <span v-else class="btn btn-outline-info" @click="downloadFileFd(fdVos)">{{ fdVos.name }}</span>
+          <!-- FD 資料 -->
+          <div v-for="(fileFdInfo, fileFdInfoIndex) in comEntry.fileFdInfoList" :key="fileFdInfoIndex">
+            {{ fileFdInfo.fdFileTy }} : {{ fileFdInfo.fdFileNm }}
+            <a v-if="fileFdInfo.base64ImgStr"
+               :href="fileFdInfo.base64ImgStr" :download="fileFdInfo.fdFileNm">
+              <img :alt="fileFdInfo.fdFileNm" :src="fileFdInfo.base64ImgStr"
+                   width="100"/>
+            </a>
+            <span v-else class="btn btn-outline-info" @click="downloadFileFd(fileFdInfo)">
+              {{ fileFdInfo.fdFileNm }}
+            </span>
           </div>
           <button class="btn btn-outline-danger btn-sm float-right"
                   @click="deleteEntry(entryIndex,comEntry.stEntry.symb,comEntry.stEntry.c8tDtm)">
@@ -90,6 +98,7 @@ export default {
       toAdd: false,
       limitPerFile: '',
       limitPerReq: '',
+      newFilesFdArr: []
     }
   },
   components: {
@@ -104,7 +113,8 @@ export default {
         StEntryService.deleteActiveEntry(symb, c8tDtm).then(
             (res) => {
               if (1 === res.data) {
-                this.activeComEntryVoList.splice(this.activeComEntryVoList.indexOf(this.activeComEntryVoList[entryIndex]), 1)
+                this.activeComEntryVoList
+                .splice(this.activeComEntryVoList.indexOf(this.activeComEntryVoList[entryIndex]), 1)
               }
             }, (error) => {
               let errMsg = 'Oops! Something went wrong'
@@ -134,12 +144,12 @@ export default {
       const blob = new Blob([json], { type: 'application/json' })
       formData.append('entryJsonStr', blob)
       // 圖片資料存 DB
-      for (const fileDbVo of allAddData.fileDbVos) {
-        formData.append('fileDbs', fileDbVo)
+      for (const dbVo of allAddData.fileDbInfoList) {
+        formData.append('fileDbs', dbVo)
       }
       // 資料放 Folder
-      for (const fileFdVo of allAddData.fileFdVos) {
-        formData.append('fileFds', fileFdVo)
+      for (const fdVo of allAddData.fileFdInfoList) {
+        formData.append('fileFds', fdVo)
       }
       StEntryService.save(formData).then(
           (res) => {
@@ -155,19 +165,19 @@ export default {
             this.activeComEntryVoList.unshift(newComEntryVo)
             this.toggleAddPage()
 
-            newComEntryVo['fileDbVos'] = []
-            newComEntryVo['fileFdVos'] = []
-            if (0 !== allAddData.fileDbVos.length) {
-              for (let i = 0; i < allAddData.fileDbVos.length; i++) {
-                newComEntryVo['fileDbVos'][i] = {}
+            newComEntryVo['fileDbInfoList'] = []
+            newComEntryVo['fileFdInfoList'] = []
+            if (0 !== allAddData.fileDbInfoList.length) {
+              for (let i = 0; i < allAddData.fileDbInfoList.length; i++) {
+                newComEntryVo['fileDbInfoList'][i] = {}
               }
-              this.setNewFilesDb(allAddData.fileDbVos)
+              this.setNewFilesDb(allAddData.fileDbInfoList)
             }
-            if (0 !== allAddData.fileFdVos.length) {
-              for (let i = 0; i < allAddData.fileFdVos.length; i++) {
-                newComEntryVo['fileFdVos'][i] = {}
+            if (0 !== allAddData.fileFdInfoList.length) {
+              for (let i = 0; i < allAddData.fileFdInfoList.length; i++) {
+                newComEntryVo['fileFdInfoList'][i] = {}
               }
-              this.setNewFilesFd(allAddData.fileFdVos)
+              this.setNewFilesFd(allAddData.fileFdInfoList)
             }
           }, (error) => {
             let errMsg = 'Oops! Something went wrong'
@@ -183,38 +193,41 @@ export default {
             alert(errMsg)
           })
     },
-    setNewFilesDb (fileDbVos) {
-      for (let i = 0; i < fileDbVos.length; i++) {
-        let fileDbVo = fileDbVos[i]
-        if ('image' === fileDbVo.type.substring(0, 5)) {
-          Promise.all(([i, fileDbVo, this.imgToBase64(fileDbVo)])).then(value => {
-            this.activeComEntryVoList[0]['fileDbVos'][value[0]]['name'] = value[1].name
-            this.activeComEntryVoList[0]['fileDbVos'][value[0]]['type'] = value[1].type
-            this.activeComEntryVoList[0]['fileDbVos'][value[0]]['size'] = value[1].size
-            this.activeComEntryVoList[0]['fileDbVos'][value[0]]['base64ImgStr'] = value[2]
+    setNewFilesDb (fileDbInfoList) {
+      for (let i = 0; i < fileDbInfoList.length; i++) {
+        let dbVo = fileDbInfoList[i]
+        if ('image' === dbVo.type.substring(0, 5)) {
+          Promise.all(([i, dbVo, this.imgToBase64(dbVo)])).then(value => {
+            this.activeComEntryVoList[0]['fileDbInfoList'][value[0]]['dbFileNm'] = value[1].name
+            this.activeComEntryVoList[0]['fileDbInfoList'][value[0]]['dbFileTy'] = value[1].type
+            this.activeComEntryVoList[0]['fileDbInfoList'][value[0]]['base64ImgStr'] = value[2]
+            this.activeComEntryVoList[0]['fileDbInfoList'][value[0]]['size'] = value[1].size
           })
         } else {
           // 目前 DB 只處理 Image
-          // this.activeComEntryVoList[0]['fileDbVos'][i]['name'] = fileDbVo.name
-          // this.activeComEntryVoList[0]['fileDbVos'][i]['type'] = fileDbVo.type
-          // this.activeComEntryVoList[0]['fileDbVos'][i]['size'] = fileDbVo.size
+          // this.activeComEntryVoList[0]['fileDbInfoList'][i]['dbFileNm'] = dbVo.name
+          // this.activeComEntryVoList[0]['fileDbInfoList'][i]['dbFileTy'] = dbVo.type
+          // this.activeComEntryVoList[0]['fileDbInfoList'][i]['size'] = dbVo.size
         }
       }
     },
-    setNewFilesFd (fileFdVos) {
-      for (let i = 0; i < fileFdVos.length; i++) {
-        let fileFdVo = fileFdVos[i]
-        if ('image' === fileFdVo.type.substring(0, 5)) {
-          Promise.all(([i, fileFdVo, this.imgToBase64(fileFdVo)])).then(value => {
-            this.activeComEntryVoList[0]['fileFdVos'][value[0]]['name'] = value[1].name
-            this.activeComEntryVoList[0]['fileFdVos'][value[0]]['type'] = value[1].type
-            this.activeComEntryVoList[0]['fileFdVos'][value[0]]['size'] = value[1].size
-            this.activeComEntryVoList[0]['fileFdVos'][value[0]]['base64ImgStr'] = value[2]
+    setNewFilesFd (fileFdInfoList) {
+      for (let i = 0; i < fileFdInfoList.length; i++) {
+        let fdVo = fileFdInfoList[i]
+        if ('image' === fdVo.type.substring(0, 5)) {
+          Promise.all(([i, fdVo, this.imgToBase64(fdVo)])).then(value => {
+            this.activeComEntryVoList[0]['fileFdInfoList'][value[0]]['fdFileNm'] = value[1].name
+            this.activeComEntryVoList[0]['fileFdInfoList'][value[0]]['fdFileTy'] = value[1].type
+            this.activeComEntryVoList[0]['fileFdInfoList'][value[0]]['base64ImgStr'] = value[2]
+            this.activeComEntryVoList[0]['fileFdInfoList'][value[0]]['size'] = value[1].size
           })
         } else {
-          this.activeComEntryVoList[0]['fileFdVos'][i]['name'] = fileFdVo.name
-          this.activeComEntryVoList[0]['fileFdVos'][i]['type'] = fileFdVo.type
-          this.activeComEntryVoList[0]['fileFdVos'][i]['size'] = fileFdVo.size
+          this.activeComEntryVoList[0]['fileFdInfoList'][i]['fdFileNm'] = fdVo.name
+          this.activeComEntryVoList[0]['fileFdInfoList'][i]['fdFileTy'] = fdVo.type
+          this.activeComEntryVoList[0]['fileFdInfoList'][i]['size'] = fdVo.size
+          let fdDownloadNm = Date.now() + '@@' + fdVo.name
+          this.activeComEntryVoList[0]['fileFdInfoList'][i]['fdDownloadNm'] = fdDownloadNm
+          this.newFilesFdArr.push({ [fdDownloadNm]: fdVo })
         }
       }
     },
@@ -227,14 +240,46 @@ export default {
       })
     },
     downloadFileFd (file) {
-      StEntryService.downloadFileFd(file.fileUid).then(res => {
-        const blob = new Blob([res.data], { type: res.headers['content-type'] })
+      // 新增的檔案
+      if (undefined === file.uid) {
+        let newFile = this.newFilesFdArr.find(newFdFile => {
+          return null !== newFdFile[file.fdDownloadNm]
+        })
+        let fdFile = newFile[file.fdDownloadNm]
+        const blob = new Blob([fdFile], { type: fdFile.type })
         const link = document.createElement('a')
         link.href = URL.createObjectURL(blob)
-        link.download = file.name
+        link.download = fdFile.name
         link.click()
         URL.revokeObjectURL(link.href)
-      })
+      } else {
+        StEntryService.downloadFileFd(file.uid).then(res => {
+          const blob = new Blob([res.data], { type: res.headers['content-type'] })
+          const link = document.createElement('a')
+          link.href = URL.createObjectURL(blob)
+          link.download = file.fdFileNm
+          link.click()
+          URL.revokeObjectURL(link.href)
+        })
+      }
+    },
+    displayDbImg (uid) {
+      return StEntryService.getFileDbImg64(uid).then(
+          (res) => {
+            return res.data
+          }, (error) => {
+            console.log(error)
+          }
+      )
+    },
+    displayFdImg (uid) {
+      return StEntryService.getFileFdImg64(uid).then(
+          (res) => {
+            return res.data
+          }, (error) => {
+            console.log(error)
+          }
+      )
     }
   },
   mounted () {
@@ -249,6 +294,25 @@ export default {
       } else {
         alert('取得資料失敗:' + error)
       }
+    }).then(() => {
+      console.log('讀取 DB 檔案資料')
+      this.activeComEntryVoList.forEach(entry => {
+        entry['fileDbInfoList'].forEach(dbInfo => {
+          this.displayDbImg(dbInfo['uid']).then((res) => {dbInfo['base64ImgStr'] = res})
+        })
+      })
+      console.log('讀取 DB 檔案資料結束')
+    }).then(() => {
+      console.log('讀取 FD 檔案資料')
+      this.activeComEntryVoList.forEach(entry => {
+        entry['fileFdInfoList'].forEach(fdInfo => {
+          if ('image' === fdInfo['fdFileTy'].substring(0, 5)) {
+            this.displayFdImg(fdInfo['uid']).then((res) => {fdInfo['base64ImgStr'] = res})
+          }
+          fdInfo['fdFileNm'] = fdInfo['fdFileNm'].substring(15)
+        })
+      })
+      console.log('讀取 FD 檔案資料結束')
     })
   }
 }

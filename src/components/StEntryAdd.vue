@@ -45,19 +45,19 @@
       <input id="fileXlsx" type="file" multiple @change="selectFile" style="visibility:hidden;"/>
     </div>
 
-    <div v-if="0 !== fileDbVos.length">
-      選擇了 {{ fileDbVos.length }} 個 Image
-      <div v-if="fileDbVosInfo">
-        <div v-for="(img, counter) in fileDbVosInfo"
+    <div v-if="0 !== fileDbInfoList.length">
+      選擇了 {{ fileDbInfoList.length }} 個 Image
+      <div v-if="fileDbDetail">
+        <div v-for="(img, counter) in fileDbDetail"
              :key="counter">
           {{ img.fileName }}<img :alt="img.fileName" :src="img.fileData" :title="img.fileName"/>
         </div>
       </div>
     </div>
-    <div v-if="0 !== fileFdVos.length">
-      選擇了 {{ fileFdVos.length }} 個檔案
-      <div v-if="fileFdVosInfo">
-        <div v-for="(img, counter) in fileFdVosInfo"
+    <div v-if="0 !== fileFdInfoList.length">
+      選擇了 {{ fileFdInfoList.length }} 個檔案
+      <div v-if="fileFdDetail">
+        <div v-for="(img, counter) in fileFdDetail"
              :key="counter">{{ img.fileName }}
         </div>
       </div>
@@ -73,10 +73,10 @@ export default {
     return {
       symb: '',
       stDtlList: [{ dtlTy: '', dtlBrf: '', dtlInfo: '', dtlDes: '' }],
-      fileDbVos: [],
-      fileDbVosInfo: [],
-      fileFdVos: [],
-      fileFdVosInfo: [],
+      fileDbInfoList: [],
+      fileDbDetail: [],
+      fileFdInfoList: [],
+      fileFdDetail: [],
     }
   },
   props: {
@@ -94,23 +94,23 @@ export default {
       this.$emit('newEntryData', this.$data)
     },
     selectImg (event) {
-      this.fileDbVos = event.target.files
-      this.fileDbVosInfo.splice(0, this.fileDbVosInfo.length)
-      for (let i = 0; i < this.fileDbVos.length; i++) {
-        this.fileDbVosInfo.push({
+      this.fileDbInfoList = event.target.files
+      this.fileDbDetail.splice(0, this.fileDbDetail.length)
+      for (let i = 0; i < this.fileDbInfoList.length; i++) {
+        this.fileDbDetail.push({
           fileIdx: i,
-          fileName: this.fileDbVos[i].name,
-          fileData: URL.createObjectURL(this.fileDbVos[i])
+          fileName: this.fileDbInfoList[i].name,
+          fileData: URL.createObjectURL(this.fileDbInfoList[i])
         })
       }
     },
     selectFile (event) {
-      this.fileFdVos = event.target.files
-      this.fileFdVosInfo.splice(0, this.fileFdVosInfo.length)
-      for (let i = 0; i < this.fileFdVos.length; i++) {
-        this.fileFdVosInfo.push({
+      this.fileFdInfoList = event.target.files
+      this.fileFdDetail.splice(0, this.fileFdDetail.length)
+      for (let i = 0; i < this.fileFdInfoList.length; i++) {
+        this.fileFdDetail.push({
           fileIdx: i,
-          fileName: this.fileFdVos[i].name,
+          fileName: this.fileFdInfoList[i].name,
         })
       }
     },
