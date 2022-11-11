@@ -2,7 +2,7 @@
   <br/>
   <div class="row">
     <div class="col" v-if="!toAdd">
-      <ul class="list-group">
+      <ul class="list-group" v-if="0 !== activeComEntryVoList.length">
         <li class="list-group-item border-top-0 border-right-0 border-left-0"
             style="border-width:5px"
             v-for="(comEntry,entryIndex) in activeComEntryVoList"
@@ -64,6 +64,7 @@
           </ul>
         </li>
       </ul>
+      <ul class="list-group" v-else> 無資料</ul>
     </div>
     <div class="col" v-if="toAdd">
       <h3>Create Stock Entry</h3>
@@ -295,15 +296,12 @@ export default {
         alert('取得資料失敗:' + error)
       }
     }).then(() => {
-      console.log('讀取 DB 檔案資料')
       this.activeComEntryVoList.forEach(entry => {
         entry['fileDbInfoList'].forEach(dbInfo => {
           this.displayDbImg(dbInfo['uid']).then((res) => {dbInfo['base64ImgStr'] = res})
         })
       })
-      console.log('讀取 DB 檔案資料結束')
     }).then(() => {
-      console.log('讀取 FD 檔案資料')
       this.activeComEntryVoList.forEach(entry => {
         entry['fileFdInfoList'].forEach(fdInfo => {
           if ('image' === fdInfo['fdFileTy'].substring(0, 5)) {
@@ -312,7 +310,6 @@ export default {
           fdInfo['fdFileNm'] = fdInfo['fdFileNm'].substring(15)
         })
       })
-      console.log('讀取 FD 檔案資料結束')
     })
   }
 }
