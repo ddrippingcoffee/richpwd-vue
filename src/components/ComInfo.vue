@@ -347,6 +347,7 @@ export default {
     .then((res) => {
       this.comList = res.data
       this.sortComInfo()
+      this.toShowPage()
     }, (error) => {
       if (403 === error.response.status) {
         EventBus.dispatch('logout')
