@@ -16,6 +16,12 @@
           </router-link>
         </li>
         <li v-if="currentUser" class="nav-item">
+          <router-link to="/cominfoPage" class="nav-link">
+            <font-awesome-icon icon="industry"/>
+            CominfoPage
+          </router-link>
+        </li>
+        <li v-if="currentUser" class="nav-item">
           <router-link to="/entry" class="nav-link">Stock Entry</router-link>
         </li>
         <li v-if="currentUser" class="nav-item">

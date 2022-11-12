@@ -8,6 +8,7 @@ const BoardAdmin = () => import('./components/BoardAdmin.vue')
 const BoardModerator = () => import('./components/BoardModerator.vue')
 const BoardUser = () => import('./components/BoardUser.vue')
 const ComInfo = () => import('./components/ComInfo.vue')
+const ComInfoPage = () => import('./components/ComInfoPage.vue')
 const StEntry = () => import('./components/StEntry.vue')
 const StEntryOld = () => import('./components/StEntryOld.vue')
 
@@ -57,6 +58,11 @@ const routes = [
         path: '/cominfo',
         name: 'cominfo',
         component: ComInfo,
+    },
+    {
+        path: '/cominfoPage',
+        name: 'cominfoPage',
+        component: ComInfoPage,
     },
     {
         path: '/entry',
