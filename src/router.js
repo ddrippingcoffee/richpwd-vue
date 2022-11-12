@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomePage from './components/HomePage.vue'
-import LoginPage from './components/LoginPage.vue'
-import RegisterPage from './components/RegisterPage.vue'
+import HomePage from './pages/HomePage.vue'
+import LoginPage from './pages/auth/LoginPage.vue'
+import RegisterPage from './pages/auth/RegisterPage.vue'
 // lazy-loaded
-const ProfilePage = () => import('./components/ProfilePage.vue')
-const BoardAdmin = () => import('./components/BoardAdmin.vue')
-const BoardModerator = () => import('./components/BoardModerator.vue')
-const BoardUser = () => import('./components/BoardUser.vue')
+const ProfilePage = () => import('./pages/auth/ProfilePage.vue')
+const BoardAdmin = () => import('./pages/board/BoardAdmin.vue')
+const BoardModerator = () => import('./pages/board/BoardModerator.vue')
+const BoardUser = () => import('./pages/board/BoardUser.vue')
 const ComInfo = () => import('./components/ComInfo.vue')
 const StEntry = () => import('./components/StEntry.vue')
 const StEntryOld = () => import('./components/StEntryOld.vue')

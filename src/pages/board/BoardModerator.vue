@@ -7,18 +7,18 @@
 </template>
 
 <script>
-import UserService from '../services/user-service'
-import EventBus from '../common/EventBus'
+import UserService from '../../services/user-service'
+import EventBus from '../../common/EventBus'
 
 export default {
-  name: 'BoardAdmin',
+  name: 'BoardModerator',
   data () {
     return {
       content: '',
     }
   },
   mounted () {
-    UserService.getAdminBoard().then(
+    UserService.getModeratorBoard().then(
         (response) => {
           this.content = response.data
         },
