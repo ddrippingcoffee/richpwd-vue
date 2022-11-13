@@ -16,7 +16,7 @@
           </router-link>
         </li>
         <li v-if="currentUser" class="nav-item">
-          <router-link to="/cominfoPage" class="nav-link">
+          <router-link to="/cominfopage" class="nav-link">
             <font-awesome-icon icon="industry"/>
             CominfoPage
           </router-link>
@@ -68,8 +68,8 @@
         </li>
       </div>
     </nav>
-
-    <div class="container">
+    <br/>
+    <div class="container position-absolute">
       <router-view/>
     </div>
   </div>

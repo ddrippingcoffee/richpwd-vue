@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import UserService from '../services/user-service'
-import EventBus from '../common/EventBus'
+import UserService from '../../services/user-service'
+import EventBus from '../../common/EventBus'
 
 export default {
   name: 'BoardUser',
