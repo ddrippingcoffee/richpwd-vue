@@ -69,7 +69,7 @@
       </div>
     </nav>
     <br/>
-    <div class="container position-absolute">
+    <div class="container">
       <router-view/>
     </div>
   </div>
