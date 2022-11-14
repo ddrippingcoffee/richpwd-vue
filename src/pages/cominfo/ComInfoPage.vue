@@ -4,15 +4,27 @@
       <ComInfoQuery
           @queryRslt="getQueryRslt($event)"
           :getComByIndusPageInfo="pageInfo"
+          :getEditingCondition="isEditing"
+          :getAddCondition="isAdding"
       />
       <ComInfoList
           :retrieveQueryRslt="queryRslt"
           @pageInfo="retrieveByPageInfo($event)"
+          @currComInfo="retrieveCurrComInfo($event)"
+          :getEditingCondition="isEditing"
+          :getAddCondition="isAdding"
       />
     </div>
     <div class="col-lg-8">
-      <ComInfoAdd/>
-      <ComInfoEdit/>
+      <ComInfoAdd
+          :getEditingCondition="isEditing"
+          @isAdding="retrieveIsAdding($event)"
+      />
+      <ComInfoEdit
+          :getCurrComInfoToEdit="currComInfo"
+          @isEditing="retrieveIsEditing($event)"
+          :getAddCondition="isAdding"
+      />
     </div>
   </div>
 </template>
@@ -27,8 +39,11 @@ export default {
   name: 'ComInfoPage',
   data () {
     return {
-      'queryRslt': {},
-      'pageInfo': {}
+      queryRslt: {},
+      pageInfo: {},
+      currComInfo: {},
+      isEditing: false,
+      isAdding: false
     }
   },
   components: {
@@ -43,6 +58,15 @@ export default {
     },
     retrieveByPageInfo (data) {
       this.pageInfo = data
+    },
+    retrieveCurrComInfo (data) {
+      this.currComInfo = data
+    },
+    retrieveIsEditing (data) {
+      this.isEditing = data
+    },
+    retrieveIsAdding (data) {
+      this.isAdding = data
     }
   }
 }

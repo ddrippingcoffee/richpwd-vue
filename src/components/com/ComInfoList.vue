@@ -1,25 +1,27 @@
 <template>
-  <ul class="list-group">
-    <li class="list-group-item"
-        v-for="(comInfo, index) in comList" :key="index"
-        :class="{ active: index === currIndex }"
-        @click="setActiveCom(comInfo, index)">
-      {{ comInfo.symb }} : {{ comInfo.comType }} : {{ comInfo.comNm }} : {{ comInfo.comIndus }}
-    </li>
-  </ul>
-  <paginate
-      v-model="page"
-      :page-count="pageSize"
-      :page-range="3"
-      :click-handler="handlePageChange"
-      :prev-text="'<'"
-      :next-text="'>'"
-      :container-class="'pagination pagination-md'"
-      :first-last-button="true"
-      :first-button-text="'<<'"
-      :last-button-text="'>>'"
-  >
-  </paginate>
+  <div :hidden="isComEditing || isComAdding">
+    <ul class="list-group">
+      <li class="list-group-item fa-1x font-weight-bold"
+          v-for="(comInfo, index) in comList" :key="index"
+          :class="{ active: index === currIndex }"
+          @click="setActiveCom(comInfo, index)">
+        {{ comInfo.symb }} : {{ comInfo.comType }} : {{ comInfo.comNm }} : {{ comInfo.comIndus }}
+      </li>
+    </ul>
+    <paginate
+        v-model="page"
+        :page-count="pageSize"
+        :page-range="3"
+        :click-handler="handlePageChange"
+        :prev-text="'<'"
+        :next-text="'>'"
+        :container-class="'pagination pagination-md'"
+        :first-last-button="true"
+        :first-button-text="'<<'"
+        :last-button-text="'>>'"
+    >
+    </paginate>
+  </div>
 </template>
 
 <script>
@@ -27,7 +29,7 @@ import Paginate from 'vuejs-paginate-next'
 
 export default {
   name: 'ComInfoList',
-  emits: ['pageInfo'],
+  emits: ['pageInfo', 'currComInfo'],
   data () {
     return {
       comList: [],
@@ -36,14 +38,24 @@ export default {
       queryBy: '',
       page: 1,
       pageSize: 0,
-      pageSliceLast: 0
+      pageSliceLast: 0,
+      isComEditing: false,
+      isComAdding: false
     }
   },
   components: {
     Paginate: Paginate,
   },
-  props: ['retrieveQueryRslt', 'queryRslt'],
+  props: ['retrieveQueryRslt', 'queryRslt',
+    'getEditingCondition', 'isEditing',
+    'getAddCondition', 'isAdding'],
   watch: {
+    getEditingCondition (isEditing) {
+      this.isComEditing = isEditing
+    },
+    getAddCondition (isAdding) {
+      this.isComAdding = isAdding
+    },
     retrieveQueryRslt (queryRslt) {
       this.queryParam = queryRslt.queryParam
       this.queryBy = queryRslt.queryBy
@@ -84,9 +96,11 @@ export default {
       this.$emit('pageInfo', this.getRequestParams())
       this.currIndex = -1
     },
-    setActiveCom (comInfo, index) {
-      this.currCom = comInfo
+    setActiveCom (currComInfo, index) {
+      this.currCom = currComInfo
       this.currIndex = index
+      currComInfo.index = index
+      this.$emit('currComInfo', currComInfo)
     }
   }
 }

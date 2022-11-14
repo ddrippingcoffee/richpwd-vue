@@ -1,5 +1,5 @@
 <template>
-  <div class="input-group-lg">
+  <div class="input-group-lg" :hidden="isComEditing || isComAdding">
     <!-- 產業別 -->
     <!-- 產業別 -->
     <!-- 產業別 -->
@@ -65,11 +65,21 @@ export default {
     return {
       comIndusOptionList: [],
       queryRslt: {},
-      selectedIndus: '-'
+      selectedIndus: '-',
+      isComEditing: false,
+      isComAdding: false
     }
   },
-  props: ['getComByIndusPageInfo', 'pageInfo'],
+  props: ['getComByIndusPageInfo', 'pageInfo',
+    'getEditingCondition', 'isEditing',
+    'getAddCondition', 'isAdding'],
   watch: {
+    getEditingCondition (isEditing) {
+      this.isComEditing = isEditing
+    },
+    getAddCondition (isAdding) {
+      this.isComAdding = isAdding
+    },
     getComByIndusPageInfo (pageInfo) {
       let queryParam = pageInfo.queryParam
       let queryBy = pageInfo.queryBy
