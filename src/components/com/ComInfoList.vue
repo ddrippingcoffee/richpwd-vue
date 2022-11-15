@@ -95,6 +95,7 @@ export default {
       this.page = value
       this.$emit('pageInfo', this.getRequestParams())
       this.currIndex = -1
+      this.$emit('currComInfo', {})
     },
     setActiveCom (currComInfo, index) {
       this.currCom = currComInfo

@@ -60,11 +60,12 @@ import EventBus from '@/common/EventBus'
 
 export default {
   name: 'ComInfoQuery',
-  emits: ['queryRslt'],
+  emits: ['queryRslt', 'currComInfo'],
   data () {
     return {
       comIndusOptionList: [],
       queryRslt: {},
+      currComInfo: {},
       selectedIndus: '-',
       isComEditing: false,
       isComAdding: false
@@ -227,6 +228,7 @@ export default {
         res.data.queryParam = val
         res.data.queryBy = 'indus'
         this.$emit('queryRslt', res.data)
+        this.$emit('currComInfo', {})
 
         // this.selectedIndus = '-'
         this.$refs.symbVal.value = ''
@@ -251,6 +253,7 @@ export default {
         res.data.queryParam = val
         res.data.queryBy = 'symb'
         this.$emit('queryRslt', res.data)
+        this.$emit('currComInfo', {})
 
         this.selectedIndus = '-'
         // this.$refs.symbVal.value=''
@@ -275,6 +278,7 @@ export default {
         res.data.queryParam = val
         res.data.queryBy = 'nm'
         this.$emit('queryRslt', res.data)
+        this.$emit('currComInfo', {})
 
         this.selectedIndus = '-'
         this.$refs.symbVal.value = ''
@@ -299,6 +303,7 @@ export default {
         res.data.queryParam = val
         res.data.queryBy = 'main'
         this.$emit('queryRslt', res.data)
+        this.$emit('currComInfo', {})
 
         this.selectedIndus = '-'
         this.$refs.symbVal.value = ''
@@ -323,6 +328,7 @@ export default {
         res.data.queryParam = val
         res.data.queryBy = 'coted'
         this.$emit('queryRslt', res.data)
+        this.$emit('currComInfo', {})
 
         this.selectedIndus = '-'
         this.$refs.symbVal.value = ''
@@ -347,6 +353,7 @@ export default {
         res.data.queryParam = val
         res.data.queryBy = 'cep'
         this.$emit('queryRslt', res.data)
+        this.$emit('currComInfo', {})
 
         this.selectedIndus = '-'
         this.$refs.symbVal.value = ''

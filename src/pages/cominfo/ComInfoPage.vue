@@ -6,6 +6,7 @@
           :getComByIndusPageInfo="pageInfo"
           :getEditingCondition="isEditing"
           :getAddCondition="isAdding"
+          @currComInfo="retrieveCurrComInfo($event)"
       />
       <ComInfoList
           :retrieveQueryRslt="queryRslt"
