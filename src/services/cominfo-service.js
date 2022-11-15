@@ -67,11 +67,7 @@ class ComInfoService {
         return api.post('/cominfo/', com)
     }
 
-    updateCom (comSymb, com) {
-        return api.put('/cominfo/' + comSymb + '/', com)
-    }
-
-    updateCurrCom (com) {
+    updateCom (com) {
         return api.put('/cominfo/' + com.symb + '/', com)
     }
 

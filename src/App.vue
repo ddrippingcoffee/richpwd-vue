@@ -10,15 +10,9 @@
           </router-link>
         </li>
         <li v-if="currentUser" class="nav-item">
-          <router-link to="/cominfo" class="nav-link">
-            <font-awesome-icon icon="industry"/>
-            Cominfo
-          </router-link>
-        </li>
-        <li v-if="currentUser" class="nav-item">
           <router-link to="/cominfopage" class="nav-link">
             <font-awesome-icon icon="industry"/>
-            CominfoPage
+            Cominfo
           </router-link>
         </li>
         <li v-if="currentUser" class="nav-item">

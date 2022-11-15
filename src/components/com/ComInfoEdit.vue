@@ -122,7 +122,7 @@ export default {
     },
     updateCom () {
       if (confirm('確定更新?')) {
-        ComInfoService.updateCurrCom(this.currCom).then(
+        ComInfoService.updateCom(this.currCom).then(
             (res) => {
               if (200 === res.status) {
                 this.isEditing = false
