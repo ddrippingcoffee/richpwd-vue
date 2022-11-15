@@ -22,6 +22,7 @@
           :getEditingCondition="isEditing"
           @isAdding="retrieveIsAdding($event)"
           :getComIndusOptionList="comIndusOptionList"
+          @pageInfo="retrieveByPageInfo($event)"
       />
       <ComInfoEdit
           :getCurrComInfoToEdit="currComInfo"

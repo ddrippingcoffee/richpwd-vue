@@ -121,26 +121,30 @@ export default {
       this.$emit('isEditing', this.isEditing)
     },
     updateCom () {
-      ComInfoService.updateCurrCom(this.currCom).then(
-          (res) => {
-            if (200 === res.status) {
-              this.isEditing = false
-              this.$emit('isEditing', this.isEditing)
-            } else {
-              alert('更新失敗')
-              alert(res)
+      if (confirm('確定更新?')) {
+        ComInfoService.updateCurrCom(this.currCom).then(
+            (res) => {
+              if (200 === res.status) {
+                this.isEditing = false
+                this.$emit('isEditing', this.isEditing)
+              } else {
+                alert('更新失敗')
+                alert(res)
+              }
+            }, (error) => {
+              if (403 === error.response.status) {
+                EventBus.dispatch('logout')
+              }
+              let errMsg = 'Oops! Something went wrong'
+              if (error.response.data.message) {
+                errMsg = error.response.data.message
+              }
+              alert('錯誤 : ' + errMsg)
             }
-          }, (error) => {
-            if (403 === error.response.status) {
-              EventBus.dispatch('logout')
-            }
-            let errMsg = 'Oops! Something went wrong'
-            if (error.response.data.message) {
-              errMsg = error.response.data.message
-            }
-            alert('錯誤 : ' + errMsg)
-          }
-      )
+        )
+      } else {
+        alert('不更新')
+      }
     }
   }
 }

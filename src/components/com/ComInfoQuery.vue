@@ -115,7 +115,10 @@ export default {
           res.data.queryBy = queryBy
           this.$emit('queryRslt', res.data)
 
-          // this.$refs.symbVal.value=''
+          // 新增的 comInfo symb
+          this.$refs.symbVal.value = queryParam
+
+          // this.$refs.symbVal.value = ''
           this.$refs.nameVal.value = ''
           this.$refs.mainVal.value = ''
           this.$refs.cotedVal.value = ''
