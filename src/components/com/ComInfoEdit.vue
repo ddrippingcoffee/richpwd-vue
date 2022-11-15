@@ -31,11 +31,21 @@
              v-model="currCom.comType" :disabled="!isEditing">
     </div>
     <!-- 產業別 -->
-    <div class="input-group mt-md-4">
-    <span class="input-group-text w-25 justify-content-lg-center"
-          id="basic-addon1">產業別</span>
-      <input type="text" class="form-control"
-             v-model="currCom.comIndus" :disabled="!isEditing">
+    <div class="input-group mt-md-4" :hidden="!isEditing">
+      <span class="input-group-text w-25 justify-content-lg-center text-danger"
+            id="basic-addon1">產業別</span>
+      <select class="form-control" v-model="currCom.comIndus" :disabled="!isEditing">
+        <option value="-" disabled>選擇產業</option>
+        <option v-for="indusOption in selectedIndusOption"
+                :key="indusOption.comIndus" :value="indusOption.comIndus">
+          {{ indusOption.comIndus }}
+        </option>
+      </select>
+    </div>
+    <div class="input-group mt-md-4" :hidden="isEditing">
+      <span class="input-group-text w-25 justify-content-lg-center"
+            id="basic-addon1">產業別</span>
+      <input type="text" class="form-control" v-model="currCom.comIndus" disabled>
     </div>
     <!-- 主要業務 -->
     <div class="input-group mt-md-4">
@@ -81,10 +91,13 @@ export default {
       currCom: {},
       currComBk: {},
       isEditing: false,
-      isComAdding: false
+      isComAdding: false,
+      selectedIndusOption: []
     }
   },
-  props: ['getCurrComInfoToEdit', 'currComInfo', 'getAddCondition', 'isAdding'],
+  props: ['getCurrComInfoToEdit', 'currComInfo',
+    'getAddCondition', 'isAdding',
+    'getComIndusOptionList', 'comIndusOptionList'],
   watch: {
     getCurrComInfoToEdit (currComInfo) {
       this.currCom = currComInfo
@@ -92,6 +105,9 @@ export default {
     },
     getAddCondition (isAdding) {
       this.isComAdding = isAdding
+    },
+    getComIndusOptionList (comIndusOptionList) {
+      this.selectedIndusOption = comIndusOptionList
     }
   },
   methods: {

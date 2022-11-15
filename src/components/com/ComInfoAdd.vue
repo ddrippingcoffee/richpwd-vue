@@ -71,19 +71,23 @@
 <script>
 export default {
   name: 'ComInfoAdd',
-  emits: ['isAdding'],
+  emits: ['isAdding', 'pageInfo'],
   data () {
     return {
       roleArr: this.$store.state.auth.user.roles,
       isAdding: false,
       isComEditing: false,
-      newCom: this.initComInfo()
+      newCom: this.initComInfo(),
+      selectedIndusOption: []
     }
   },
-  props: ['getEditingCondition', 'isEditing'],
+  props: ['getEditingCondition', 'isEditing', 'getComIndusOptionList', 'comIndusOptionList'],
   watch: {
     getEditingCondition (isEditing) {
       this.isComEditing = isEditing
+    },
+    getComIndusOptionList (comIndusOptionList) {
+      this.selectedIndusOption = comIndusOptionList
     }
   },
   methods: {

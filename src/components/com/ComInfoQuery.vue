@@ -60,7 +60,7 @@ import EventBus from '@/common/EventBus'
 
 export default {
   name: 'ComInfoQuery',
-  emits: ['queryRslt', 'currComInfo'],
+  emits: ['queryRslt', 'currComInfo', 'comIndusOptionList'],
   data () {
     return {
       comIndusOptionList: [],
@@ -377,6 +377,7 @@ export default {
     ComInfoService.getComIndusList()
     .then((res) => {
       this.comIndusOptionList = res.data
+      this.$emit('comIndusOptionList', this.comIndusOptionList)
     }, (error) => {
       if (403 === error.response.status) {
         EventBus.dispatch('logout')

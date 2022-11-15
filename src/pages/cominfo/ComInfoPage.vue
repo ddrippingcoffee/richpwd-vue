@@ -7,6 +7,7 @@
           :getEditingCondition="isEditing"
           :getAddCondition="isAdding"
           @currComInfo="retrieveCurrComInfo($event)"
+          @comIndusOptionList="retrieveComIndusOptionList($event)"
       />
       <ComInfoList
           :retrieveQueryRslt="queryRslt"
@@ -20,11 +21,13 @@
       <ComInfoAdd
           :getEditingCondition="isEditing"
           @isAdding="retrieveIsAdding($event)"
+          :getComIndusOptionList="comIndusOptionList"
       />
       <ComInfoEdit
           :getCurrComInfoToEdit="currComInfo"
           @isEditing="retrieveIsEditing($event)"
           :getAddCondition="isAdding"
+          :getComIndusOptionList="comIndusOptionList"
       />
     </div>
   </div>
@@ -44,7 +47,8 @@ export default {
       pageInfo: {},
       currComInfo: {},
       isEditing: false,
-      isAdding: false
+      isAdding: false,
+      comIndusOptionList: []
     }
   },
   components: {
@@ -68,6 +72,9 @@ export default {
     },
     retrieveIsAdding (data) {
       this.isAdding = data
+    },
+    retrieveComIndusOptionList (data) {
+      this.comIndusOptionList = data
     }
   }
 }
