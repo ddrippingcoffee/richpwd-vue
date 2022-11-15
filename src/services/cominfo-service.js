@@ -71,6 +71,10 @@ class ComInfoService {
         return api.put('/cominfo/' + comSymb + '/', com)
     }
 
+    updateCurrCom (com) {
+        return api.put('/cominfo/' + com.symb + '/', com)
+    }
+
     deleteCom (comSymb) {
         return api.delete('/cominfo/' + comSymb + '/')
     }
