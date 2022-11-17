@@ -73,7 +73,7 @@ export default {
             this.pageSize = (queryRslt.last) ? 1 : 2
           } else {
             if (!queryRslt.last) {
-              this.pageSize = (offset / 10) + 2
+              this.pageSize = (offset / 8) + 2
             }
           }
         }
@@ -98,7 +98,6 @@ export default {
       this.$emit('currComInfo', {})
     },
     setActiveCom (currComInfo, index) {
-      this.currCom = currComInfo
       this.currIndex = index
       currComInfo.index = index
       this.$emit('currComInfo', currComInfo)
