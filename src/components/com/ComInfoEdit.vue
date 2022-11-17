@@ -24,18 +24,25 @@
              v-model="currCom.comNm" :disabled="!isEditing">
     </div>
     <!-- 市場別 -->
-    <div class="input-group mt-md-4">
-    <span class="input-group-text w-25 justify-content-lg-center"
-          id="basic-addon1">市場別</span>
-      <input type="text" class="form-control"
-             v-model="currCom.comType" :disabled="!isEditing">
+    <div class="input-group mt-md-4" :hidden="!isEditing">
+      <span class="input-group-text w-25 justify-content-lg-center text-danger"
+            id="basic-addon1">市場別</span>
+      <select class="form-control" v-model="currCom.comType" :disabled="!isEditing">
+        <option value="市">市</option>
+        <option value="櫃">櫃</option>
+        <option value="ETF">ETF</option>
+      </select>
+    </div>
+    <div class="input-group mt-md-4" :hidden="isEditing">
+      <span class="input-group-text w-25 justify-content-lg-center"
+            id="basic-addon1">市場別</span>
+      <input type="text" class="form-control" v-model="currCom.comType" disabled>
     </div>
     <!-- 產業別 -->
     <div class="input-group mt-md-4" :hidden="!isEditing">
       <span class="input-group-text w-25 justify-content-lg-center text-danger"
             id="basic-addon1">產業別</span>
       <select class="form-control" v-model="currCom.comIndus" :disabled="!isEditing">
-        <option value="-" disabled>選擇產業</option>
         <option v-for="indusOption in selectedIndusOption"
                 :key="indusOption.comIndus" :value="indusOption.comIndus">
           {{ indusOption.comIndus }}

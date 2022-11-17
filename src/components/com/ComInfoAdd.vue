@@ -25,10 +25,14 @@
     </div>
     <!-- 市場別 -->
     <div class="input-group mt-md-4">
-    <span class="input-group-text w-25 justify-content-lg-center text-danger"
-          id="basic-addon1">市場別</span>
-      <input type="text" class="form-control"
-             v-model="newCom.comType">
+      <span class="input-group-text w-25 justify-content-lg-center text-danger"
+            id="basic-addon1">市場別</span>
+      <select class="form-control" v-model="newCom.comType">
+        <option value="-" disabled>選擇市場</option>
+        <option value="市">市</option>
+        <option value="櫃">櫃</option>
+        <option value="ETF">ETF</option>
+      </select>
     </div>
     <!-- 產業別 -->
     <div class="input-group mt-md-4">
@@ -101,7 +105,7 @@ export default {
   methods: {
     initComInfo () {
       return {
-        symb: '', comNm: '', comType: '', comIndus: '-',
+        symb: '', comNm: '', comType: '-', comIndus: '-',
         comMain: '', comCoted: '', comCep: '', comOfcl: ''
       }
     },
