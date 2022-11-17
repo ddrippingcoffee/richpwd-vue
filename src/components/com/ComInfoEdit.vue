@@ -83,6 +83,12 @@
              v-model="currCom.comOfcl" :disabled="!isEditing">
     </div>
   </div>
+  <!--
+  <button class="btn btn-danger mt-md-4"
+          @click="deleteCom"
+          :hidden="(undefined === this.currCom.symb) || isEditing || isComAdding">刪除資料
+  </button>
+  -->
 </template>
 
 <script>
@@ -152,6 +158,31 @@ export default {
       } else {
         alert('不更新')
       }
+    },
+    deleteCom () {
+      /*
+      if (confirm('確定刪除?')) {
+        ComInfoService.deleteCom(this.currCom.symb)
+        .then((res) => {
+          if (1 === res.data) {
+            alert('刪除成功')
+          } else {
+            alert('刪除失敗')
+          }
+        }, (error) => {
+          if (403 === error.response.status) {
+            EventBus.dispatch('logout')
+          }
+          let errMsg = 'Oops! Something went wrong'
+          if (error.response.data.message) {
+            errMsg = error.response.data.message
+          }
+          alert('錯誤 : ' + errMsg)
+        })
+      } else {
+        alert('不刪除')
+      }
+       */
     }
   }
 }
