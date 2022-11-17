@@ -14,6 +14,18 @@ class StEntryService {
         return api.get('/entry/old')
     }
 
+    getActiveEntryPage (page) {
+        let url = '/entry/s/pg/act'
+        url += '?page=' + page
+        url += '&size=' + 3
+        url += '&desc=' + 'desc'
+        return api.get(url)
+    }
+
+    getEntryFileList (symb, c8tDtm) {
+        return api.get('/entry/' + symb + '/file?c8tDtm=' + c8tDtm)
+    }
+
     deleteActiveEntry (symb, c8tDtm) {
         return api.put('/entry/', { 'symb': symb, 'c8tDtm': c8tDtm })
     }

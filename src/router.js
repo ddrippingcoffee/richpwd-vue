@@ -10,6 +10,7 @@ const BoardUser = () => import('./pages/board/BoardUser.vue')
 const StEntry = () => import('./components/StEntry.vue')
 const StEntryOld = () => import('./components/StEntryOld.vue')
 const ComInfoPage = () => import('./pages/cominfo/ComInfoPage')
+const StEntryPage = () => import('./pages/stentry/StEntryPage')
 
 const routes = [
     {
@@ -67,6 +68,11 @@ const routes = [
         path: '/entryOld',
         name: 'entryOld',
         component: StEntryOld,
+    },
+    {
+        path: '/stentryPage',
+        name: 'stentryPage',
+        component: StEntryPage,
     },
 ]
 
