@@ -22,8 +22,34 @@ class StEntryService {
         return api.get(url)
     }
 
+    getOldEntryPage (page) {
+        let url = '/entry/s/pg/old'
+        url += '?page=' + page
+        url += '&size=' + 3
+        url += '&desc=' + 'desc'
+        return api.get(url)
+    }
+
     getEntryFileList (symb, c8tDtm) {
         return api.get('/entry/' + symb + '/file?c8tDtm=' + c8tDtm)
+    }
+
+    getAllEntryBySymbSlice (symb, page) {
+        let url = '/entry/s/sl/'
+        url += 'symb?symb=' + symb
+        url += '&page=' + page
+        url += '&size=' + 3
+        url += '&desc=' + 'desc'
+        return api.get(url)
+    }
+
+    getAllEntryByComNmSlice (comNm, page) {
+        let url = '/entry/s/sl/'
+        url += 'comNm?comNm=' + comNm
+        url += '&page=' + page
+        url += '&size=' + 3
+        url += '&desc=' + 'desc'
+        return api.get(url)
     }
 
     deleteActiveEntry (symb, c8tDtm) {

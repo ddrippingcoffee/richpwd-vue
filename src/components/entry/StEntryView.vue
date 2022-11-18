@@ -1,5 +1,5 @@
 <template>
-  <div class="list-group" v-if="0 !== entryContent.length">
+  <div class="list-group" v-if="0 !== entryContent.length" :hidden="isEntryAdding">
     <li class="list-group-item list-group-item-action flex-column align-items-start"
         v-for="(entry,entryIndex) in entryContent" :key="entryIndex">
       <div class="d-flex w-100 justify-content-between">
@@ -21,17 +21,22 @@
           <small v-if="dtl.dtlDes">Des : {{ dtl.dtlDes }}</small>
         </div>
       </div>
-      <div v-if="undefined !== entry.entryFileInfo" class="mt-2">
+      <div class="mt-2" v-if="undefined !== entry.entryFileInfo">
         <!-- DB 資料 -->
         <!-- DB 資料 -->
         <!-- DB 資料 -->
         <div v-for="(fileDbInfo, fileDbInfoIndex) in entry.entryFileInfo.fileDbInfoList"
              :key="fileDbInfoIndex">
           <!--              {{ fileDbInfo.dbFileTy }} : {{ fileDbInfo.dbFileNm }}-->
-          <a v-if="fileDbInfo.base64ImgStr"
-             :href="fileDbInfo.base64ImgStr" :download="fileDbInfo.dbFileNm">
-            <img :alt="fileDbInfo.dbFileNm" :src="fileDbInfo.base64ImgStr"/>
-          </a>
+          <figure class="figure">
+            <img class="figure-img img-fluid rounded"
+                 :alt="fileDbInfo.dbFileNm" :src="fileDbInfo.base64ImgStr">
+            <figcaption class="figure-caption">{{ fileDbInfo.dbFileNm }}</figcaption>
+          </figure>
+          <!--          <a v-if="fileDbInfo.base64ImgStr"-->
+          <!--             :href="fileDbInfo.base64ImgStr" :download="fileDbInfo.dbFileNm">-->
+          <!--            <img :alt="fileDbInfo.dbFileNm" :src="fileDbInfo.base64ImgStr"/>-->
+          <!--          </a>-->
         </div>
         <!-- FD 資料 -->
         <!-- FD 資料 -->
@@ -67,17 +72,23 @@ export default {
   data () {
     return {
       entryContent: {},
-      entryFile: {}
+      entryFile: {},
+      isEntryAdding: false
     }
   },
-  props: ['getActiveEntryContent', 'activeEntryContent'],
+  props: ['getActiveEntryContent', 'activeEntryContent',
+    'getAddCondition', 'isAdding'],
   watch: {
     getActiveEntryContent (activeEntryContent) {
       this.entryContent = activeEntryContent
     },
+    getAddCondition (isAdding) {
+      this.isEntryAdding = isAdding
+    },
   }, methods: {
     downloadFileFd (fileFdInfo) {
-      StEntryService.downloadFileFd(fileFdInfo.uid).then(res => {
+      StEntryService.downloadFileFd(fileFdInfo.uid)
+      .then((res) => {
         const blob = new Blob([res.data], { type: res.headers['content-type'] })
         const link = document.createElement('a')
         link.href = URL.createObjectURL(blob)

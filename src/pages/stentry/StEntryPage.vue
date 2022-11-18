@@ -5,16 +5,22 @@
           @activeEntryPage="retrieveActiveEntryPage($event)"
           @activeEntryContent="retrieveActiveEntryContent($event)"
           :getPageInfo="pageInfo"
+          :getAddCondition="isAdding"
       />
       <StEntryList
           :getActiveEntryPage="activeEntryPage"
           @pageInfo="retrieveByPageInfo($event)"
+          :getAddCondition="isAdding"
       />
     </div>
     <div class="col-lg-8">
-      <StEntryAdd/>
+      <StEntryAdd
+          @isAdding="retrieveIsAdding($event)"
+          @pageInfo="retrieveByPageInfo($event)"
+      />
       <StEntryView
           :getActiveEntryContent="activeEntryContent"
+          :getAddCondition="isAdding"
       />
     </div>
   </div>
@@ -34,6 +40,7 @@ export default {
       activeEntryPage: {},
       activeEntryContent: {},
       pageInfo: {},
+      isAdding: false
     }
   },
   methods: {
@@ -45,6 +52,9 @@ export default {
     },
     retrieveByPageInfo (data) {
       this.pageInfo = data
+    },
+    retrieveIsAdding (data) {
+      this.isAdding = data
     }
   }
 }
