@@ -9,16 +9,28 @@
       <div v-for="(dtl,dtlIndex) in entry.stDtlList" :key="dtlIndex">
         <div v-if="'date' === dtl.dtlTy">
           <p class="mb-1">{{ dtl.dtlBrf }} : <strong>{{ dtl.dtlInfo }}</strong></p>
-          <small v-if="dtl.dtlDes">Des : {{ dtl.dtlDes }}</small>
+          <small v-if="dtl.dtlDes">
+            Des :
+            <textarea class="form-control"
+                      rows="5" v-model="dtl.dtlDes" disabled></textarea>
+          </small>
         </div>
         <div v-if="'note' === dtl.dtlTy">
           <p class="mb-1">Brief : <strong>{{ dtl.dtlBrf }}</strong></p>
           <p class="mb-1" v-if="dtl.dtlInfo">Info : {{ dtl.dtlInfo }}</p>
-          <small v-if="dtl.dtlDes">Des : {{ dtl.dtlDes }}</small>
+          <small v-if="dtl.dtlDes">
+            Des :
+            <textarea class="form-control"
+                      rows="5" v-model="dtl.dtlDes" disabled></textarea>
+          </small>
         </div>
         <div v-if="'link' === dtl.dtlTy">
           <a :href="dtl.dtlInfo" target="_blank">{{ dtl.dtlBrf }}</a>
-          <small v-if="dtl.dtlDes">Des : {{ dtl.dtlDes }}</small>
+          <small v-if="dtl.dtlDes">
+            Des :
+            <textarea class="form-control"
+                      rows="5" v-model="dtl.dtlDes" disabled></textarea>
+          </small>
         </div>
       </div>
       <div class="mt-2" v-if="undefined !== entry.entryFileInfo">
