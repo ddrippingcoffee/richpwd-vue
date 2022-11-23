@@ -29,6 +29,8 @@
           @isEditing="retrieveIsEditing($event)"
           :getAddCondition="isAdding"
           :getComIndusOptionList="comIndusOptionList"
+          :getCurrPageInfo="currPageInfo"
+          @pageInfo="retrieveByPageInfo($event)"
       />
     </div>
   </div>
@@ -46,6 +48,7 @@ export default {
     return {
       queryRslt: {},
       pageInfo: {},
+      currPageInfo: {},
       currComInfo: {},
       isEditing: false,
       isAdding: false,
@@ -61,6 +64,7 @@ export default {
   methods: {
     getQueryRslt (data) {
       this.queryRslt = data
+      this.currPageInfo = { 'queryParam': this.queryRslt.queryParam, 'queryBy': this.queryRslt.queryBy }
     },
     retrieveByPageInfo (data) {
       this.pageInfo = data

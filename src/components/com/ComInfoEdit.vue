@@ -54,26 +54,12 @@
             id="basic-addon1">產業別</span>
       <input type="text" class="form-control" v-model="currCom.comIndus" disabled>
     </div>
-    <!-- 主要業務 -->
-    <div class="input-group mt-md-4">
-    <span class="input-group-text w-25 justify-content-lg-center"
-          id="basic-addon1">主要業務</span>
-      <input type="text" class="form-control"
-             v-model="currCom.comMain" :disabled="!isEditing">
-    </div>
     <!-- 相關產業 -->
     <div class="input-group mt-md-4">
     <span class="input-group-text w-25 justify-content-lg-center"
           id="basic-addon1">相關產業</span>
       <input type="text" class="form-control"
              v-model="currCom.comCoted" :disabled="!isEditing">
-    </div>
-    <!-- 相關概念 -->
-    <div class="input-group mt-md-4">
-    <span class="input-group-text w-25 justify-content-lg-center"
-          id="basic-addon1">相關概念</span>
-      <input type="text" class="form-control"
-             v-model="currCom.comCep" :disabled="!isEditing">
     </div>
     <!-- 官方網站 -->
     <div class="input-group mt-md-4">
@@ -82,13 +68,25 @@
       <input type="text" class="form-control"
              v-model="currCom.comOfcl" :disabled="!isEditing">
     </div>
+    <!-- 主要業務 -->
+    <div class="input-group mt-md-4">
+    <span class="input-group-text w-25 justify-content-lg-center"
+          id="basic-addon1">主要業務</span>
+      <textarea type="text" class="form-control" maxlength="250" rows="5"
+                v-model="currCom.comMain" :disabled="!isEditing"></textarea>
+    </div>
+    <!-- 相關概念 -->
+    <div class="input-group mt-md-4">
+    <span class="input-group-text w-25 justify-content-lg-center"
+          id="basic-addon1">相關概念</span>
+      <textarea type="text" class="form-control" maxlength="250" rows="5"
+                v-model="currCom.comCep" :disabled="!isEditing"></textarea>
+    </div>
   </div>
-  <!--
   <button class="btn btn-danger mt-md-4"
           @click="deleteCom"
           :hidden="(undefined === this.currCom.symb) || isEditing || isComAdding">刪除資料
   </button>
-  -->
 </template>
 
 <script>
@@ -97,7 +95,7 @@ import EventBus from '@/common/EventBus'
 
 export default {
   name: 'ComInfoEdit',
-  emits: ['isEditing'],
+  emits: ['isEditing', 'pageInfo'],
   data () {
     return {
       roleArr: this.$store.state.auth.user.roles,
@@ -105,12 +103,15 @@ export default {
       currComBk: {},
       isEditing: false,
       isComAdding: false,
-      selectedIndusOption: []
+      selectedIndusOption: [],
+      pageInfo: {},
     }
   },
   props: ['getCurrComInfoToEdit', 'currComInfo',
     'getAddCondition', 'isAdding',
-    'getComIndusOptionList', 'comIndusOptionList'],
+    'getComIndusOptionList', 'comIndusOptionList',
+    'getCurrPageInfo', 'currPageInfo'
+  ],
   watch: {
     getCurrComInfoToEdit (currComInfo) {
       this.currCom = currComInfo
@@ -121,6 +122,9 @@ export default {
     },
     getComIndusOptionList (comIndusOptionList) {
       this.selectedIndusOption = comIndusOptionList
+    },
+    getCurrPageInfo (currPageInfo) {
+      this.pageInfo = currPageInfo
     }
   },
   methods: {
@@ -160,12 +164,13 @@ export default {
       }
     },
     deleteCom () {
-      /*
       if (confirm('確定刪除?')) {
         ComInfoService.deleteCom(this.currCom.symb)
         .then((res) => {
           if (1 === res.data) {
-            alert('刪除成功')
+            this.currCom = {}
+            this.pageInfo.page = 0
+            this.$emit('pageInfo', this.pageInfo)
           } else {
             alert('刪除失敗')
           }
@@ -182,7 +187,6 @@ export default {
       } else {
         alert('不刪除')
       }
-       */
     }
   }
 }

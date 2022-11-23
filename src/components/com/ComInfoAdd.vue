@@ -46,13 +46,6 @@
         </option>
       </select>
     </div>
-    <!-- 主要業務 -->
-    <div class="input-group mt-md-4">
-    <span class="input-group-text w-25 justify-content-lg-center"
-          id="basic-addon1">主要業務</span>
-      <input type="text" class="form-control"
-             v-model="newCom.comMain">
-    </div>
     <!-- 相關產業 -->
     <div class="input-group mt-md-4">
     <span class="input-group-text w-25 justify-content-lg-center"
@@ -60,19 +53,26 @@
       <input type="text" class="form-control"
              v-model="newCom.comCoted">
     </div>
-    <!-- 相關概念 -->
-    <div class="input-group mt-md-4">
-    <span class="input-group-text w-25 justify-content-lg-center"
-          id="basic-addon1">相關概念</span>
-      <input type="text" class="form-control"
-             v-model="newCom.comCep">
-    </div>
     <!-- 官方網站 -->
     <div class="input-group mt-md-4">
     <span class="input-group-text w-25 justify-content-lg-center"
           id="basic-addon1">官方網站</span>
       <input type="text" class="form-control"
              v-model="newCom.comOfcl">
+    </div>
+    <!-- 主要業務 -->
+    <div class="input-group mt-md-4">
+    <span class="input-group-text w-25 justify-content-lg-center"
+          id="basic-addon1">主要業務</span>
+      <textarea type="text" class="form-control" maxlength="250" rows="5"
+                v-model="newCom.comMain"></textarea>
+    </div>
+    <!-- 相關概念 -->
+    <div class="input-group mt-md-4">
+    <span class="input-group-text w-25 justify-content-lg-center"
+          id="basic-addon1">相關概念</span>
+      <textarea type="text" class="form-control" maxlength="250" rows="5"
+                v-model="newCom.comCep"></textarea>
     </div>
   </div>
 </template>
