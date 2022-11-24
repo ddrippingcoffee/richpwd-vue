@@ -54,8 +54,9 @@
         <div class="input-group mt-md-1">
           <span class="input-group-text justify-content-lg-center"
                 id="basic-addon1">敘述</span>
-          <input class="form-control" type="text" placeholder="For Detail Description"
-                 v-model.lazy="detail.dtlDes">
+          <textarea class="form-control" type="text"
+                    placeholder="For Detail Description" rows="5"
+                    v-model.lazy="detail.dtlDes"></textarea>
         </div>
       </div>
       <!-- 圖檔 -->
@@ -143,9 +144,18 @@ export default {
       }, (error) => {
         if (403 === error.response.status) {
           EventBus.dispatch('logout')
-        } else {
-          alert('取得資料失敗:' + error)
         }
+        let errMsg = 'Oops! Something went wrong'
+        if (error.response.data.message) {
+          errMsg = error.response.data.message
+        }
+        if (error.response.data.errors) {
+          error.response.data.errors.forEach(err => {
+            errMsg += '\n'
+            errMsg += err.defaultMessage
+          })
+        }
+        alert('錯誤 : ' + errMsg)
       })
     },
     cancelAddEntry () {
