@@ -25,13 +25,14 @@
           </small>
         </div>
         <div v-if="'link' === dtl.dtlTy">
-          <a :href="dtl.dtlInfo" target="_blank">{{ dtl.dtlBrf }}</a>
+          <p class="mb-1"><a :href="dtl.dtlInfo" target="_blank">{{ dtl.dtlBrf }}</a></p>
           <small v-if="dtl.dtlDes">
             Des :
             <textarea class="form-control"
                       rows="5" v-model="dtl.dtlDes" disabled></textarea>
           </small>
         </div>
+        <hr class="w-50 align-content-center"/>
       </div>
       <div class="mt-2" v-if="undefined !== entry.entryFileInfo">
         <!-- DB 資料 -->
