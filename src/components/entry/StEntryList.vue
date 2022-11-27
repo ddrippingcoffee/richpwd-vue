@@ -3,7 +3,7 @@
     <ul class="list-group">
       <li class="list-group-item fa-1x font-weight-bold"
           v-for="(entry, index) in currEntryPage" :key="index">
-        {{ entry.c8tDtm }} : {{ entry.symb }} : {{ entry.comNm }}
+        {{ entry.c8tDtm }} : {{ entry.symb }} : {{ entry.comNm }} <small v-if="entry.delDtm">舊</small>
       </li>
     </ul>
     <paginate
@@ -32,6 +32,8 @@ export default {
   data () {
     return {
       currEntryPage: {},
+      queryParam: '',
+      queryBy: '',
       page: 1,
       pageSize: 0,
       isEntryAdding: false
@@ -44,11 +46,27 @@ export default {
     'getAddCondition', 'isAdding'],
   watch: {
     getActiveEntryPage (activeEntryPage) {
+      this.queryParam = activeEntryPage.queryParam
+      this.queryBy = activeEntryPage.queryBy
       if (undefined !== activeEntryPage.content) {
         this.currEntryPage = activeEntryPage.content
         if (undefined !== activeEntryPage.totalPages) {
+          // 查詢結果包含總頁數
           this.pageSize = activeEntryPage.totalPages
+        } else {
+          // 查詢結果未包含總頁數
+          let offset = activeEntryPage.pageable.offset
+          if (0 === offset) {
+            // 第一頁
+            this.pageSize = (activeEntryPage.last) ? 1 : 2
+          } else {
+            if (!activeEntryPage.last) {
+              this.pageSize = (offset / 3) + 2
+            }
+          }
         }
+        // 更新目前頁數
+        this.page = (activeEntryPage.pageable.pageNumber + 1)
       }
     },
     getAddCondition (isAdding) {
@@ -58,6 +76,8 @@ export default {
   methods: {
     getRequestParams () {
       return {
+        'queryParam': this.queryParam,
+        'queryBy': this.queryBy,
         'page': this.page - 1,
       }
     },

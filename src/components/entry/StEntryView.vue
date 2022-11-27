@@ -4,7 +4,10 @@
         v-for="(entry,entryIndex) in entryContent" :key="entryIndex">
       <div class="d-flex w-100 justify-content-between">
         <h5 class="mb-1">{{ entry.symb }} : {{ entry.comNm }}</h5>
-        <small>{{ entry.c8tDtm }}</small>
+        <small>
+          <div>建立時間 : {{ entry.c8tDtm }}</div>
+          <div v-if="entry.delDtm">刪除時間 : {{ entry.delDtm }}</div>
+        </small>
       </div>
       <div v-for="(dtl,dtlIndex) in entry.stDtlList" :key="dtlIndex">
         <div v-if="'date' === dtl.dtlTy">
@@ -68,6 +71,7 @@
         </div>
       </div>
       <button class="btn btn-outline-danger btn-sm float-right"
+              v-if="!entry.delDtm"
               @click="deleteEntry(entryIndex,entry.symb,entry.c8tDtm)">
         刪除
       </button>
