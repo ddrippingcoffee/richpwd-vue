@@ -1,17 +1,16 @@
 <template>
-  <input type="text" class="w-75 mb-2" placeholder="個股代號"
-         ref="symbVal" @keyup.enter="getEntryBySymbBtn(this.$refs.symbVal.value)"/>
-  <button class="btn-outline-secondary w-25" type="button"
-          @click="getEntryBySymbBtn(this.$refs.symbVal.value)">Search
-  </button>
-  <!-- 公司名稱 -->
-  <!-- 公司名稱 -->
-  <!-- 公司名稱 -->
-  <input type="text" class="w-75 mb-2" placeholder="企業名稱"
-         ref="nameVal" @keyup.enter="getEntryByNmBtn(this.$refs.nameVal.value)"/>
-  <button class="btn-outline-secondary w-25" type="button"
-          @click="getEntryByNmBtn(this.$refs.nameVal.value)">Search
-  </button>
+  <div :hidden="isEntryAdding">
+    <input type="text" class="w-75 mb-2" placeholder="個股代號"
+           ref="symbVal" @keyup.enter="getEntryBySymbBtn(this.$refs.symbVal.value)"/>
+    <button class="btn-outline-secondary w-25" type="button"
+            @click="getEntryBySymbBtn(this.$refs.symbVal.value)">Search
+    </button>
+    <input type="text" class="w-75 mb-2" placeholder="企業名稱"
+           ref="nameVal" @keyup.enter="getEntryByNmBtn(this.$refs.nameVal.value)"/>
+    <button class="btn-outline-secondary w-25" type="button"
+            @click="getEntryByNmBtn(this.$refs.nameVal.value)">Search
+    </button>
+  </div>
 </template>
 
 <script>
