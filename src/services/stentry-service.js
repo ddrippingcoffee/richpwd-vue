@@ -6,14 +6,6 @@ class StEntryService {
         return api.post('/entry/stores', stEntry)
     }
 
-    getAllActiveEntry () {
-        return api.get('/entry/act')
-    }
-
-    getAllOldEntry () {
-        return api.get('/entry/old')
-    }
-
     getActiveEntryPage (page) {
         let url = '/entry/s/pg/act'
         url += '?page=' + page
@@ -22,6 +14,7 @@ class StEntryService {
         return api.get(url)
     }
 
+    // 無使用
     getOldEntryPage (page) {
         let url = '/entry/s/pg/old'
         url += '?page=' + page
