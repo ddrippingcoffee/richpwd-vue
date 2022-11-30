@@ -67,21 +67,19 @@
         <!-- accept=".xlsx" -->
         <input id="fileXlsx" type="file" multiple @change="selectFile" style="visibility:hidden;"/>
       </div>
-      <div v-if="0 !== fileDbInfoList.length">
-        選擇了 {{ fileDbInfoList.length }} 個 Image
-        <div v-if="fileDbDetail">
-          <div v-for="(img, counter) in fileDbDetail" :key="counter">
-            {{ img.fileName }}<br/>
-            <img :alt="img.fileName" :src="img.fileData" :title="img.fileName"/>
-          </div>
+      <div v-if="0 !== fileDbDetail.length">
+        選擇了 {{ fileDbDetail.length }} 個 Image
+        <div v-for="(img, counter) in fileDbDetail" :key="counter">
+          {{ img.fileName }}<br/>
+          <img :alt="img.fileName" :src="img.fileUrl" :title="img.fileName" width="150"/>
+          <span class="btn-sm btn-outline-danger" @click="deleteDbBtnImg(counter)">Delete</span>
         </div>
       </div>
-      <div v-if="0 !== fileFdInfoList.length">
-        選擇了 {{ fileFdInfoList.length }} 個檔案
-        <div v-if="fileFdDetail">
-          <div v-for="(img, counter) in fileFdDetail" :key="counter">
-            {{ img.fileName }}
-          </div>
+      <div v-if="0 !== fileFdDetail.length">
+        選擇了 {{ fileFdDetail.length }} 個檔案
+        <div v-for="(img, counter) in fileFdDetail" :key="counter">
+          {{ img.fileName }}
+          <span class="btn-sm btn-outline-danger" @click="deleteFdBtnImg(counter)">Delete</span>
         </div>
       </div>
     </form>
@@ -102,9 +100,7 @@ export default {
       isAdding: false,
       symb: '',
       stDtlList: [{ dtlTy: '', dtlBrf: '', dtlInfo: '', dtlDes: '' }],
-      fileDbInfoList: [],
       fileDbDetail: [],
-      fileFdInfoList: [],
       fileFdDetail: [],
     }
   },
@@ -124,12 +120,14 @@ export default {
       const blob = new Blob([json], { type: 'application/json' })
       formData.append('entryJsonStr', blob)
       // 圖片資料存 DB
-      for (const dbVo of this.fileDbInfoList) {
-        formData.append('fileDbs', dbVo)
+      let tempDbFiles = toRaw(this.fileDbDetail)
+      for (let i = 0; i < tempDbFiles.length; i++) {
+        formData.append('fileDbs', tempDbFiles[i]['fileObj'])
       }
       // 資料放 Folder
-      for (const fdVo of this.fileFdInfoList) {
-        formData.append('fileFds', fdVo)
+      let tempFdFiles = toRaw(this.fileFdDetail)
+      for (let i = 0; i < tempFdFiles.length; i++) {
+        formData.append('fileFds', tempFdFiles[i]['fileObj'])
       }
       StEntryService.save(formData)
       .then((res) => {
@@ -168,33 +166,39 @@ export default {
     deleteDtl (counter) {
       this.stDtlList.splice(counter, 1)
     },
+    deleteDbBtnImg (counter) {
+      this.fileDbDetail.splice(counter, 1)
+    },
+    deleteFdBtnImg (counter) {
+      this.fileFdDetail.splice(counter, 1)
+    },
     selectImg (event) {
-      this.fileDbInfoList = event.target.files
+      let newFileList = Array.from(event.target.files)
       this.fileDbDetail.splice(0, this.fileDbDetail.length)
-      for (let i = 0; i < this.fileDbInfoList.length; i++) {
+      for (let i = 0; i < newFileList.length; i++) {
         this.fileDbDetail.push({
           fileIdx: i,
-          fileName: this.fileDbInfoList[i].name,
-          fileData: URL.createObjectURL(this.fileDbInfoList[i])
+          fileName: newFileList[i].name,
+          fileUrl: URL.createObjectURL(newFileList[i]),
+          fileObj: newFileList[i]
         })
       }
     },
     selectFile (event) {
-      this.fileFdInfoList = event.target.files
+      let newFileList = Array.from(event.target.files)
       this.fileFdDetail.splice(0, this.fileFdDetail.length)
-      for (let i = 0; i < this.fileFdInfoList.length; i++) {
+      for (let i = 0; i < newFileList.length; i++) {
         this.fileFdDetail.push({
           fileIdx: i,
-          fileName: this.fileFdInfoList[i].name,
+          fileName: newFileList[i].name,
+          fileObj: newFileList[i]
         })
       }
     },
     resetEntry () {
       this.symb = ''
       this.stDtlList = [{ dtlTy: '', dtlBrf: '', dtlInfo: '', dtlDes: '' }]
-      this.fileDbInfoList = []
       this.fileDbDetail = []
-      this.fileFdInfoList = []
       this.fileFdDetail = []
     }
   }
