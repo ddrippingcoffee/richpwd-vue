@@ -145,7 +145,7 @@ export default {
           this.resetEntry()
           this.isAdding = false
           this.$emit('isAdding', this.isAdding)
-          this.$emit('pageInfo', { 'page': 0 })
+          this.$emit('pageInfo', { 'queryBy': 'init', 'queryParam': '', 'page': 0 })
         } else {
           alert('執行新增失敗')
         }
