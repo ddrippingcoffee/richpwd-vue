@@ -60,26 +60,36 @@
         </div>
       </div>
       <!-- 圖檔 -->
-      <div class="mt-2">
-        <label for="fileImg" class="btn btn-info">選擇圖片</label>
-        <input id="fileImg" type="file" multiple @change="selectImg" style="visibility:hidden;" accept="image/*"/>
-        <label for="fileXlsx" class="btn btn-info">選擇檔案</label>
-        <!-- accept=".xlsx" -->
-        <input id="fileXlsx" type="file" multiple @change="selectFile" style="visibility:hidden;"/>
-      </div>
-      <div v-if="0 !== fileDbDetail.length">
-        選擇了 {{ fileDbDetail.length }} 個 Image
-        <div v-for="(img, counter) in fileDbDetail" :key="counter">
-          {{ img.fileName }}<br/>
-          <img :alt="img.fileName" :src="img.fileUrl" :title="img.fileName" width="150"/>
-          <span class="btn-sm btn-outline-danger" @click="deleteDbBtnImg(counter)">Delete</span>
+      <div class="mt-2 input-group">
+        <div class="col-6">
+          <label for="fileImg" class="btn btn-info">選擇圖片</label>
+          <input id="fileImg" type="file" multiple @change="selectImg" style="visibility:hidden;" accept="image/*"/>
+        </div>
+        <div class="col-6">
+          <label for="fileXlsx" class="btn btn-info">選擇檔案</label>
+          <input id="fileXlsx" type="file" multiple @change="selectFile" style="visibility:hidden;"/>
+          <!-- accept=".xlsx" -->
         </div>
       </div>
-      <div v-if="0 !== fileFdDetail.length">
-        選擇了 {{ fileFdDetail.length }} 個檔案
-        <div v-for="(img, counter) in fileFdDetail" :key="counter">
-          {{ img.fileName }}
-          <span class="btn-sm btn-outline-danger" @click="deleteFdBtnImg(counter)">Delete</span>
+      <div class="input-group">
+        <div class="col-6 text-sm-center">
+          <div v-if="0 !== fileDbDetail.length">
+            選擇了 {{ fileDbDetail.length }} 個 Image
+            <div v-for="(img, counter) in fileDbDetail" :key="counter">
+              {{ img.fileName }}<br/>
+              <img :alt="img.fileName" :src="img.fileUrl" :title="img.fileName" width="150"/>
+              <span class="btn-sm btn-outline-danger" @click="deleteDbBtnImg(counter)">Delete</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 text-sm-center">
+          <div v-if="0 !== fileFdDetail.length">
+            選擇了 {{ fileFdDetail.length }} 個檔案
+            <div v-for="(img, counter) in fileFdDetail" :key="counter">
+              {{ img.fileName }}
+              <span class="btn-sm btn-outline-danger" @click="deleteFdBtnImg(counter)">Delete</span>
+            </div>
+          </div>
         </div>
       </div>
     </form>
