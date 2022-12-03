@@ -77,7 +77,8 @@
             選擇了 {{ fileDbDetail.length }} 個 Image
             <div v-for="(img, counter) in fileDbDetail" :key="counter">
               {{ img.fileName }}<br/>
-              <img :alt="img.fileName" :src="img.fileUrl" :title="img.fileName" width="150"/>
+              <img :alt="img.fileName" :src="img.fileUrl" :title="img.fileName" width="150"
+                   @mousemove="zoomIn" @mouseout="zoomOut"/>
               <span class="btn-sm btn-outline-danger" @click="deleteDbBtnImg(counter)">Delete</span>
             </div>
           </div>
@@ -103,7 +104,7 @@ import EventBus from '@/common/EventBus'
 
 export default {
   name: 'StEntryAdd',
-  emits: ['isAdding', 'pageInfo'],
+  emits: ['isAdding', 'pageInfo', 'imgEvent'],
   data () {
     return {
       roleArr: this.$store.state.auth.user.roles,
@@ -204,6 +205,12 @@ export default {
           fileObj: newFileList[i]
         })
       }
+    },
+    zoomIn (event) {
+      this.$emit('imgEvent', event)
+    },
+    zoomOut () {
+      this.$emit('imgEvent', {})
     },
     resetEntry () {
       this.symb = ''

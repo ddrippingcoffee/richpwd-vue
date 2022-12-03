@@ -12,11 +12,13 @@
           @pageInfo="retrieveByPageInfo($event)"
           :getAddCondition="isAdding"
       />
+      <StEntryImg :getImgEvent="imgEvent"/>
     </div>
     <div class="col-lg-5">
       <StEntryAdd
           @isAdding="retrieveIsAdding($event)"
           @pageInfo="retrieveByPageInfo($event)"
+          @imgEvent="retrieveImgEvent($event)"
       />
       <StEntryView
           :getActiveEntryContent="activeEntryContent"
@@ -31,16 +33,18 @@ import StEntryQuery from '@/components/entry/StEntryQuery'
 import StEntryList from '@/components/entry/StEntryList'
 import StEntryAdd from '@/components/entry/StEntryAdd'
 import StEntryView from '@/components/entry/StEntryView'
+import StEntryImg from '@/components/entry/StEntryImg.vue'
 
 export default {
   name: 'StEntryPage',
-  components: { StEntryQuery, StEntryList, StEntryAdd, StEntryView },
+  components: { StEntryImg, StEntryQuery, StEntryList, StEntryAdd, StEntryView },
   data () {
     return {
       activeEntryPage: {},
       activeEntryContent: {},
       pageInfo: {},
-      isAdding: false
+      isAdding: false,
+      imgEvent: {},
     }
   },
   methods: {
@@ -55,6 +59,9 @@ export default {
     },
     retrieveIsAdding (data) {
       this.isAdding = data
+    },
+    retrieveImgEvent (data) {
+      this.imgEvent = data
     }
   }
 }
