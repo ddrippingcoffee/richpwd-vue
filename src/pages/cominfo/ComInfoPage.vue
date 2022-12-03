@@ -1,6 +1,6 @@
 <template>
-  <div class="list row">
-    <div class="col-lg-4">
+  <div class="list row justify-content-center">
+    <div class="col-lg-5">
       <ComInfoQuery
           @queryRslt="getQueryRslt($event)"
           :getComByIndusPageInfo="pageInfo"
@@ -17,7 +17,7 @@
           :getAddCondition="isAdding"
       />
     </div>
-    <div class="col-lg-8">
+    <div class="col-lg-5">
       <ComInfoAdd
           :getEditingCondition="isEditing"
           @isAdding="retrieveIsAdding($event)"

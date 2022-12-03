@@ -60,7 +60,7 @@
       </li>
     </div>
   </nav>
-  <div class="container">
+  <div class="container-fluid">
     <br/>
     <router-view/>
   </div>

@@ -1,6 +1,6 @@
 <template>
-  <div class="list row">
-    <div class="col-lg-4">
+  <div class="list row justify-content-center">
+    <div class="col-lg-5">
       <StEntryQuery
           @activeEntryPage="retrieveActiveEntryPage($event)"
           @activeEntryContent="retrieveActiveEntryContent($event)"
@@ -13,7 +13,7 @@
           :getAddCondition="isAdding"
       />
     </div>
-    <div class="col-lg-8">
+    <div class="col-lg-5">
       <StEntryAdd
           @isAdding="retrieveIsAdding($event)"
           @pageInfo="retrieveByPageInfo($event)"
