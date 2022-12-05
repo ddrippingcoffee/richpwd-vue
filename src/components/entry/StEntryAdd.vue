@@ -63,11 +63,11 @@
       <div class="mt-2 input-group">
         <div class="col-6">
           <label for="fileImg" class="btn btn-info">選擇圖片</label>
-          <input id="fileImg" type="file" multiple @change="selectImg" style="visibility:hidden;" accept="image/*"/>
+          <input id="fileImg" type="file" multiple @click="cleanVal" @change="selectImg" style="visibility:hidden;" accept="image/*"/>
         </div>
         <div class="col-6">
           <label for="fileXlsx" class="btn btn-info">選擇檔案</label>
-          <input id="fileXlsx" type="file" multiple @change="selectFile" style="visibility:hidden;"/>
+          <input id="fileXlsx" type="file" multiple @click="cleanVal" @change="selectFile" style="visibility:hidden;"/>
           <!-- accept=".xlsx" -->
         </div>
       </div>
@@ -182,6 +182,11 @@ export default {
     },
     deleteFdBtnImg (counter) {
       this.fileFdDetail.splice(counter, 1)
+    },
+    cleanVal(event){
+      let inputId = event.srcElement.__vnode.props['id']
+      let ele = document.getElementById(inputId)
+      ele.value = null
     },
     selectImg (event) {
       let newFileList = Array.from(event.target.files)
