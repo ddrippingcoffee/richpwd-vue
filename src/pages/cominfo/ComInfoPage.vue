@@ -1,5 +1,5 @@
 <template>
-  <div class="list row justify-content-center">
+  <div class="list row justify-content-center mt-5">
     <div class="col-lg-5">
       <ComInfoQuery
           @queryRslt="getQueryRslt($event)"

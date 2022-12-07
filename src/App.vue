@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand navbar-dark bg-dark">
+  <nav class="navbar navbar-expand navbar-dark bg-dark fixed-top">
     <a href="/" class="navbar-brand">Rich Pwd</a>
     <div class="navbar-nav mr-auto">
       <li class="nav-item">
