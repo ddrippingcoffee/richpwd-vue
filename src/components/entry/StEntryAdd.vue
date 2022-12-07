@@ -61,19 +61,46 @@
       </div>
       <!-- 圖檔 -->
       <div class="mt-2 input-group">
-        <div class="col-6">
+        <div class="col-4">
+          <div class="input-group">
+            <span class="input-group-text"><font-awesome-icon icon="images"/></span>
+            <input class="form-control" @paste="pasteImg" accept="image/*" placeholder="貼上圖片"/>
+          </div>
+        </div>
+        <div class="col-4">
+          <label for="fileXlsx" class="btn btn-info">選擇檔案</label>
+          <input id="fileXlsx" type="file" multiple @click="cleanVal" @change="selectFile"
+                 style="visibility:hidden;"/>
+          <!-- accept=".xlsx" -->
+        </div>
+        <div class="col-4">
           <label for="fileImg" class="btn btn-info">選擇圖片</label>
           <input id="fileImg" type="file" multiple @click="cleanVal" @change="selectImg" style="visibility:hidden;"
                  accept="image/*"/>
         </div>
-        <div class="col-6">
-          <label for="fileXlsx" class="btn btn-info">選擇檔案</label>
-          <input id="fileXlsx" type="file" multiple @click="cleanVal" @change="selectFile" style="visibility:hidden;"/>
-          <!-- accept=".xlsx" -->
-        </div>
       </div>
       <div class="input-group">
-        <div class="col-6 text-sm-center">
+        <div class="col-4 text-sm-center">
+          <div v-if="0 !== pasteDbDetail.length">
+            貼上了 {{ pasteDbDetail.length }} 個 Image
+            <div v-for="(img, counter) in pasteDbDetail" :key="counter">
+              {{ img.fileName }}<br/>
+              <img :alt="img.fileName" :src="img.fileUrl" :title="img.fileName" width="150"
+                   @mousemove="zoomIn" @mouseout="zoomOut"/>
+              <span class="btn-sm btn-outline-danger" @click="deleteDbPasteImg(counter)">Delete</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-4 text-sm-center">
+          <div v-if="0 !== fileFdDetail.length">
+            選擇了 {{ fileFdDetail.length }} 個檔案
+            <div v-for="(img, counter) in fileFdDetail" :key="counter">
+              {{ img.fileName }}
+              <span class="btn-sm btn-outline-danger" @click="deleteFdBtnImg(counter)">Delete</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-4 text-sm-center">
           <div v-if="0 !== fileDbDetail.length">
             選擇了 {{ fileDbDetail.length }} 個 Image
             <div v-for="(img, counter) in fileDbDetail" :key="counter">
@@ -81,15 +108,6 @@
               <img :alt="img.fileName" :src="img.fileUrl" :title="img.fileName" width="150"
                    @mousemove="zoomIn" @mouseout="zoomOut"/>
               <span class="btn-sm btn-outline-danger" @click="deleteDbBtnImg(counter)">Delete</span>
-            </div>
-          </div>
-        </div>
-        <div class="col-6 text-sm-center">
-          <div v-if="0 !== fileFdDetail.length">
-            選擇了 {{ fileFdDetail.length }} 個檔案
-            <div v-for="(img, counter) in fileFdDetail" :key="counter">
-              {{ img.fileName }}
-              <span class="btn-sm btn-outline-danger" @click="deleteFdBtnImg(counter)">Delete</span>
             </div>
           </div>
         </div>
@@ -114,6 +132,7 @@ export default {
       stDtlList: [{ dtlTy: '', dtlBrf: '', dtlInfo: '', dtlDes: '' }],
       fileDbDetail: [],
       fileFdDetail: [],
+      pasteDbDetail: [],
     }
   },
   methods: {
@@ -140,6 +159,11 @@ export default {
       let tempFdFiles = toRaw(this.fileFdDetail)
       for (let i = 0; i < tempFdFiles.length; i++) {
         formData.append('fileFds', tempFdFiles[i]['fileObj'])
+      }
+      // Paste 放 Folder
+      let tempFdPaste = toRaw(this.pasteDbDetail)
+      for (let i = 0; i < tempFdPaste.length; i++) {
+        formData.append('fileFds', tempFdPaste[i]['fileObj'])
       }
       StEntryService.save(formData)
       .then((res) => {
@@ -178,6 +202,9 @@ export default {
     deleteDtl (counter) {
       this.stDtlList.splice(counter, 1)
     },
+    deleteDbPasteImg (counter) {
+      this.pasteDbDetail.splice(counter, 1)
+    },
     deleteDbBtnImg (counter) {
       this.fileDbDetail.splice(counter, 1)
     },
@@ -188,6 +215,19 @@ export default {
       let inputId = event.srcElement.__vnode.props['id']
       let ele = document.getElementById(inputId)
       ele.value = null
+    },
+    pasteImg (event) {
+      let items = event.clipboardData.items
+      if (items[0].type.indexOf('image') !== -1) {
+        let blob = items[0].getAsFile()
+        this.pasteDbDetail.push({
+          fileName: 'paste_' + this.getTimeStamp(new Date()),
+          fileUrl: URL.createObjectURL(blob),
+          fileObj: blob
+        })
+      } else {
+        alert('非圖片')
+      }
     },
     selectImg (event) {
       let newFileList = Array.from(event.target.files)
@@ -210,6 +250,12 @@ export default {
         })
       }
     },
+    getTimeStamp (dt) {
+      const offset = dt.getTimezoneOffset()
+      dt = new Date(dt.getTime() - (offset * 60 * 1000))
+      return dt.toISOString().split('.')[0]
+      .replaceAll(':','').replaceAll('-','')
+    },
     zoomIn (event) {
       this.$emit('imgEvent', event)
     },
@@ -221,6 +267,7 @@ export default {
       this.stDtlList = [{ dtlTy: '', dtlBrf: '', dtlInfo: '', dtlDes: '' }]
       this.fileDbDetail = []
       this.fileFdDetail = []
+      this.pasteDbDetail = []
     }
   }
 }
