@@ -193,7 +193,6 @@ export default {
       this.fileDbDetail.splice(0, this.fileDbDetail.length)
       for (let i = 0; i < newFileList.length; i++) {
         this.fileDbDetail.push({
-          fileIdx: i,
           fileName: newFileList[i].name,
           fileUrl: URL.createObjectURL(newFileList[i]),
           fileObj: newFileList[i]
@@ -205,7 +204,6 @@ export default {
       this.fileFdDetail.splice(0, this.fileFdDetail.length)
       for (let i = 0; i < newFileList.length; i++) {
         this.fileFdDetail.push({
-          fileIdx: i,
           fileName: newFileList[i].name,
           fileObj: newFileList[i]
         })
