@@ -61,53 +61,67 @@
       </div>
       <!-- 圖檔 -->
       <div class="mt-2 input-group">
-        <div class="col-4">
-          <div class="input-group">
+        <div class="input-group col-4">
+          <div class="input-group col-8 pl-0">
             <span class="input-group-text"><font-awesome-icon icon="images"/></span>
-            <input class="form-control" @paste="pasteImg" accept="image/*" placeholder="貼上圖片"/>
+            <input class="form-control" @paste="pasteImg" accept="image/*" placeholder="貼上"/>
+          </div>
+          <div class="col-4 m-auto">
+            <h6>總 {{ pasteDbDetail.length }}</h6>
           </div>
         </div>
-        <div class="col-4">
-          <label for="fileXlsx" class="btn btn-info">選擇檔案</label>
-          <input id="fileXlsx" type="file" multiple @click="cleanVal" @change="selectFile"
-                 style="visibility:hidden;"/>
-          <!-- accept=".xlsx" -->
+        <div class="input-group col-4">
+          <div class="input-group col-6">
+            <label for="fileXlsx" class="btn btn-info mb-0">檔案</label>
+            <input id="fileXlsx" type="file" multiple @click="cleanVal" @change="selectFile"
+                   style="display:none;"/>
+            <!-- accept=".xlsx" -->
+          </div>
+          <div class="col-6 m-auto">
+            <h6>總 {{ fileFdDetail.length }}</h6>
+          </div>
         </div>
-        <div class="col-4">
-          <label for="fileImg" class="btn btn-info">選擇圖片</label>
-          <input id="fileImg" type="file" multiple @click="cleanVal" @change="selectImg" style="visibility:hidden;"
-                 accept="image/*"/>
+        <div class="input-group col-4">
+          <div class="input-group col-6">
+            <label for="fileImg" class="btn btn-info mb-0">圖檔</label>
+            <input id="fileImg" type="file" multiple @click="cleanVal" @change="selectImg" style="display:none;"
+                   accept="image/*"/>
+          </div>
+          <div class="col-6 m-auto">
+            <h6>總 {{ fileDbDetail.length }}</h6>
+          </div>
         </div>
       </div>
-      <div class="input-group">
-        <div class="col-4 text-sm-center">
+      <div class="mt-2 input-group">
+        <div class="col-4">
           <div v-if="0 !== pasteDbDetail.length">
-            貼上了 {{ pasteDbDetail.length }} 個 Image
-            <div v-for="(img, counter) in pasteDbDetail" :key="counter">
-              {{ img.fileName }}<br/>
+            <div class="mt-2" v-for="(img, counter) in pasteDbDetail" :key="counter">
+              <small>{{ img.fileName }}</small>
               <img :alt="img.fileName" :src="img.fileUrl" :title="img.fileName" width="150"
                    @mousemove="zoomIn" @mouseout="zoomOut"/>
               <span class="btn-sm btn-outline-danger" @click="deleteDbPasteImg(counter)">Delete</span>
             </div>
           </div>
         </div>
-        <div class="col-4 text-sm-center">
+        <div class="col-4">
           <div v-if="0 !== fileFdDetail.length">
-            選擇了 {{ fileFdDetail.length }} 個檔案
-            <div v-for="(img, counter) in fileFdDetail" :key="counter">
-              {{ img.fileName }}
-              <span class="btn-sm btn-outline-danger" @click="deleteFdBtnImg(counter)">Delete</span>
+            <div class="mt-2" v-for="(img, counter) in fileFdDetail" :key="counter">
+              <small>{{ img.fileName }}</small>
+              <div class="float-right">
+                <span class="btn-sm btn-outline-danger" @click="deleteFdBtnImg(counter)">Delete</span>
+              </div>
             </div>
           </div>
         </div>
-        <div class="col-4 text-sm-center">
+        <div class="col-4">
           <div v-if="0 !== fileDbDetail.length">
-            選擇了 {{ fileDbDetail.length }} 個 Image
-            <div v-for="(img, counter) in fileDbDetail" :key="counter">
-              {{ img.fileName }}<br/>
+            <div class="mt-2" v-for="(img, counter) in fileDbDetail" :key="counter">
+              <small>{{ img.fileName }}</small>
               <img :alt="img.fileName" :src="img.fileUrl" :title="img.fileName" width="150"
                    @mousemove="zoomIn" @mouseout="zoomOut"/>
-              <span class="btn-sm btn-outline-danger" @click="deleteDbBtnImg(counter)">Delete</span>
+              <div class="float-right">
+                <span class="btn-sm btn-outline-danger" @click="deleteDbBtnImg(counter)">Delete</span>
+              </div>
             </div>
           </div>
         </div>
