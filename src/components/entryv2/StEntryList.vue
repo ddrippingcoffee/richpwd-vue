@@ -6,7 +6,7 @@
           :class="{ active: index === currIndex }"
           :style="[index !== currIndex && entry.delDtm === null ? {'background': '#f5f6fa','color': '#000000'} : {'':''}]"
           @click="setActiveEntry(entry, index)">
-        {{ entry.c8tDtm }} <small class="float-right" v-if="entry.delDtm">舊</small>
+        {{ entry.dtmMsg }} <small class="float-right" v-if="entry.delDtm">舊</small>
       </li>
     </ul>
     <paginate
@@ -51,6 +51,7 @@ export default {
       this.isPageEmpty = listHidden
     },
     setEntryPage (entryInfo) {
+      this.buildValue(entryInfo.content)
       this.currEntryInfo = entryInfo.content
       this.pageSize = entryInfo.totalPages
       // 更新目前頁數
@@ -61,6 +62,39 @@ export default {
     }
   },
   methods: {
+    buildValue (content) {
+      content.forEach(e => {
+        let dtmMsg = ''
+        dtmMsg += e.c8tDtm
+        dtmMsg += this.setDtlStat(e.stDtlList)
+        e.dtmMsg = dtmMsg
+      })
+    },
+    setDtlStat (dtlList) {
+      let note = 0
+      let date = 0
+      let link = 0
+      for (let i = 0; i < dtlList.length; i++) {
+        if ('note' === dtlList[i].dtlTy) {
+          note++
+        } else if ('date' === dtlList[i].dtlTy) {
+          date++
+        } else if ('link' === dtlList[i].dtlTy) {
+          link++
+        }
+      }
+      let msg = '  '
+      if (note !== 0) {
+        msg += note + ' note '
+      }
+      if (date !== 0) {
+        msg += date + ' date '
+      }
+      if (link !== 0) {
+        msg += link + ' link'
+      }
+      return msg
+    },
     handlePageChange (value) {
       this.page = value
       this.$emit('currEntryPage', { 'symb': this.currSymb, 'page': (this.page - 1) })
