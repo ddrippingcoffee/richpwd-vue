@@ -8,7 +8,6 @@ const BoardAdmin = () => import('./pages/board/BoardAdmin.vue')
 const BoardModerator = () => import('./pages/board/BoardModerator.vue')
 const BoardUser = () => import('./pages/board/BoardUser.vue')
 const ComInfoPage = () => import('./pages/cominfo/ComInfoPage')
-const StEntryPage = () => import('./pages/stentry/StEntryPage')
 const StEntryPageV2 = () => import('./pages/stentryv2/StEntryPage')
 
 const routes = [
@@ -57,11 +56,6 @@ const routes = [
         path: '/cominfoPage',
         name: 'cominfoPage',
         component: ComInfoPage,
-    },
-    {
-        path: '/stentryPage',
-        name: 'stentryPage',
-        component: StEntryPage,
     },
     {
         path: '/stentryPageV2',

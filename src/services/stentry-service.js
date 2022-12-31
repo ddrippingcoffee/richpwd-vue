@@ -37,43 +37,8 @@ class StEntryService {
         return api.get(url)
     }
 
-    getActiveEntryPage (page) {
-        let url = '/entry/s/pg/act'
-        url += '?page=' + page
-        url += '&size=' + 3
-        url += '&desc=' + 'desc'
-        return api.get(url)
-    }
-
-    // 無使用
-    getOldEntryPage (page) {
-        let url = '/entry/s/pg/old'
-        url += '?page=' + page
-        url += '&size=' + 3
-        url += '&desc=' + 'desc'
-        return api.get(url)
-    }
-
     getEntryFileList (symb, c8tDtm) {
         return api.get('/entry/' + symb + '/file?c8tDtm=' + c8tDtm)
-    }
-
-    getAllEntryBySymbSlice (symb, page) {
-        let url = '/entry/s/sl/'
-        url += 'symb?symb=' + symb
-        url += '&page=' + page
-        url += '&size=' + 3
-        url += '&desc=' + 'desc'
-        return api.get(url)
-    }
-
-    getAllEntryByComNmSlice (comNm, page) {
-        let url = '/entry/s/sl/'
-        url += 'comNm?comNm=' + comNm
-        url += '&page=' + page
-        url += '&size=' + 3
-        url += '&desc=' + 'desc'
-        return api.get(url)
     }
 
     deleteActiveEntry (symb, c8tDtm) {
