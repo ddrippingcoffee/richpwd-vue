@@ -6,6 +6,37 @@ class StEntryService {
         return api.post('/entry/stores', stEntry)
     }
 
+    getTotalEntryPage (page) {
+        let url = '/entry/s/pg/tot'
+        url += '?page=' + page
+        url += '&size=' + 8
+        return api.get(url)
+    }
+
+    getTotalEntryBySymbSlice (symb, page) {
+        let url = '/entry/s/pg/tot/symb'
+        url += '?symb=' + symb
+        url += '&page=' + page
+        url += '&size=' + 8
+        return api.get(url)
+    }
+
+    getTotalEntryByComNmSlice (comNm, page) {
+        let url = '/entry/s/pg/tot/comNm'
+        url += '?comNm=' + comNm
+        url += '&page=' + page
+        url += '&size=' + 8
+        return api.get(url)
+    }
+
+    getOneEntryPage (symb, page) {
+        let url = '/entry/s/pg/one'
+        url += '?symb=' + symb
+        url += '&page=' + page
+        url += '&size=' + 10
+        return api.get(url)
+    }
+
     getActiveEntryPage (page) {
         let url = '/entry/s/pg/act'
         url += '?page=' + page

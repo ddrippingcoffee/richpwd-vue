@@ -19,6 +19,11 @@
           StEntry
         </router-link>
       </li>
+      <li v-if="currentUser" class="nav-item">
+        <router-link to="/stentryPageV2" class="nav-link">
+          StEntryV2
+        </router-link>
+      </li>
       <li v-if="showAdminBoard" class="nav-item">
         <router-link to="/admin" class="nav-link">Admin Board</router-link>
       </li>
