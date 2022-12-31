@@ -20,7 +20,10 @@
         <small v-if="dtl.dtlDes">
           Des :
           <textarea class="form-control"
-                    rows="5" v-model="dtl.dtlDes" disabled></textarea>
+                    v-model="dtl.dtlDes"
+                    :style="{height:dtl.customHeight}"
+                    disabled
+          ></textarea>
         </small>
       </div>
       <div v-if="'note' === dtl.dtlTy">
@@ -29,7 +32,10 @@
         <small v-if="dtl.dtlDes">
           Des :
           <textarea class="form-control"
-                    rows="5" v-model="dtl.dtlDes" disabled></textarea>
+                    v-model="dtl.dtlDes"
+                    :style="{height:dtl.customHeight}"
+                    disabled
+          ></textarea>
         </small>
       </div>
       <div v-if="'link' === dtl.dtlTy">
@@ -37,7 +43,10 @@
         <small v-if="dtl.dtlDes">
           Des :
           <textarea class="form-control"
-                    rows="5" v-model="dtl.dtlDes" disabled></textarea>
+                    v-model="dtl.dtlDes"
+                    :style="{height:dtl.customHeight}"
+                    disabled
+          ></textarea>
         </small>
       </div>
       <hr class="w-50 align-content-center"/>
@@ -99,6 +108,7 @@ export default {
       StEntryService.getEntryFileList(entry.symb, entry.c8tDtm)
       .then((res) => {
         entry.entryFileInfo = res.data
+        this.buildValue(entry)
         this.currData = entry
       }, (error) => {
         this.handleErr(error)
@@ -169,6 +179,25 @@ export default {
         })
       } else {
         alert('不刪除')
+      }
+    },
+    buildValue (entry) {
+      entry.stDtlList.forEach(dtl => {
+        this.setTextareaHeight(dtl)
+      })
+    },
+    setTextareaHeight (dtl) {
+      if (dtl.dtlDes) {
+        let newHeight = ''
+        let numOfLine = dtl.dtlDes.split(/\r\n|\r|\n/).length
+        if (1 === numOfLine) {
+          // 處理未斷行文字
+          let newLen = ((dtl.dtlDes.length / 60) + 1) * 30
+          newHeight = (newLen >= 40) ? newLen : 40
+        } else {
+          newHeight = (numOfLine * 32) + 1
+        }
+        dtl.customHeight = newHeight + 'px'
       }
     },
     zoomIn (event) {
