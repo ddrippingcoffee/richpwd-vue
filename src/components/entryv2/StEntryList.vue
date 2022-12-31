@@ -28,6 +28,7 @@
 
 <script>
 import Paginate from 'vuejs-paginate-next'
+import Moment from 'moment'
 
 export default {
   name: 'StEntryList',
@@ -65,10 +66,27 @@ export default {
     buildValue (content) {
       content.forEach(e => {
         let dtmMsg = ''
-        dtmMsg += e.c8tDtm
+        dtmMsg = Moment(e.c8tDtm).format('YYMMDD-hh:mm')
+        dtmMsg += this.setFutureDateMark(e.stDtlList)
         dtmMsg += this.setDtlStat(e.stDtlList)
         e.dtmMsg = dtmMsg
       })
+    },
+    setFutureDateMark (dtlList) {
+      for (let i = 0; i < dtlList.length; i++) {
+        if ('date' === dtlList[i].dtlTy) {
+          if (/^\d\d\d\d\d\d$/.test(dtlList[i].dtlInfo)) {
+            if (Moment(dtlList[i].dtlInfo, 'YYMMDD').isSameOrAfter()) {
+              return ' ＊ '
+            }
+          } else if (/^\d\d\d\d\/\d\d\/\d\d$/.test(dtlList[i].dtlInfo)) {
+            if (Moment(new Date(dtlList[i].dtlInfo)).isSameOrAfter()) {
+              return ' ＊ '
+            }
+          }
+        }
+      }
+      return ''
     },
     setDtlStat (dtlList) {
       let note = 0
