@@ -61,11 +61,7 @@ export default {
 
         this.$emit('entryTotalPage', this.entryTotalPage)
       }, (error) => {
-        if (403 === error.response.status) {
-          EventBus.dispatch('logout')
-        } else {
-          alert('取得資料失敗:' + error)
-        }
+        this.handleErr(error)
       })
     },
     getOneEntry (currEntryInfo) {
@@ -74,11 +70,7 @@ export default {
         let data = res.data
         this.$emit('entryInfo', data)
       }, (error) => {
-        if (403 === error.response.status) {
-          EventBus.dispatch('logout')
-        } else {
-          alert('取得資料失敗:' + error)
-        }
+        this.handleErr(error)
       })
     },
     getEntryBySymbBtn (val, page) {
@@ -90,11 +82,7 @@ export default {
 
         this.$emit('entryTotalPage', this.entryTotalPage)
       }, (error) => {
-        if (403 === error.response.status) {
-          EventBus.dispatch('logout')
-        } else {
-          alert('取得資料失敗:' + error)
-        }
+        this.handleErr(error)
       })
       // 新增後直接查詢並替換 input value
       this.$refs.symbVal.value = val
@@ -109,13 +97,26 @@ export default {
 
         this.$emit('entryTotalPage', this.entryTotalPage)
       }, (error) => {
-        if (403 === error.response.status) {
-          EventBus.dispatch('logout')
-        } else {
-          alert('取得資料失敗:' + error)
-        }
+        this.handleErr(error)
       })
       this.$refs.symbVal.value = ''
+    },
+    handleErr (error) {
+      if (403 === error.response.status) {
+        EventBus.dispatch('logout')
+      } else {
+        let errMsg = 'Oops! Something went wrong'
+        if (error.response.data.message) {
+          errMsg = error.response.data.message
+        }
+        if (error.response.data.errors) {
+          error.response.data.errors.forEach(err => {
+            errMsg += '\n'
+            errMsg += err.defaultMessage
+          })
+        }
+        alert('錯誤 : ' + errMsg)
+      }
     },
     init () {
       this.getTotalEntry({ 'queryBy': 'init', 'queryParam': '', 'page': 0 })

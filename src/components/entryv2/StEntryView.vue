@@ -101,11 +101,7 @@ export default {
         entry.entryFileInfo = res.data
         this.currData = entry
       }, (error) => {
-        if (403 === error.response.status) {
-          EventBus.dispatch('logout')
-        } else {
-          alert('取得資料失敗:' + error)
-        }
+        this.handleErr(error)
       })
       .then(() => {
         entry.entryFileInfo.fileDbInfoList.forEach(dbInfo => {
@@ -135,20 +131,18 @@ export default {
     displayDbImg (uid) {
       return StEntryService.getFileDbImg64(uid)
       .then((res) => {
-            return res.data
-          }, (error) => {
-            console.log(error)
-          }
-      )
+        return res.data
+      }, (error) => {
+        this.handleErr(error)
+      })
     },
     displayFdImg (uid) {
       return StEntryService.getFileFdImg64(uid)
       .then((res) => {
-            return res.data
-          }, (error) => {
-            console.log(error)
-          }
-      )
+        return res.data
+      }, (error) => {
+        this.handleErr(error)
+      })
     },
     downloadFileFd (fileFdInfo) {
       StEntryService.downloadFileFd(fileFdInfo.uid)
@@ -159,6 +153,8 @@ export default {
         link.download = fileFdInfo.fdFileNm
         link.click()
         URL.revokeObjectURL(link.href)
+      }, (error) => {
+        this.handleErr(error)
       })
     },
     deleteEntry (symb, c8tDtm) {
@@ -169,20 +165,7 @@ export default {
             this.currData.delDtm = '已刪除請重新查詢'
           }
         }, (error) => {
-          if (403 === error.response.status) {
-            EventBus.dispatch('logout')
-          }
-          let errMsg = 'Oops! Something went wrong'
-          if (error.response.data.message) {
-            errMsg = error.response.data.message
-          }
-          if (error.response.data.errors) {
-            error.response.data.errors.forEach(err => {
-              errMsg += '\n'
-              errMsg += err.defaultMessage
-            })
-          }
-          alert(errMsg)
+          this.handleErr(error)
         })
       } else {
         alert('不刪除')
@@ -193,6 +176,23 @@ export default {
     },
     zoomOut () {
       this.$emit('imgEvent', {})
+    },
+    handleErr (error) {
+      if (403 === error.response.status) {
+        EventBus.dispatch('logout')
+      } else {
+        let errMsg = 'Oops! Something went wrong'
+        if (error.response.data.message) {
+          errMsg = error.response.data.message
+        }
+        if (error.response.data.errors) {
+          error.response.data.errors.forEach(err => {
+            errMsg += '\n'
+            errMsg += err.defaultMessage
+          })
+        }
+        alert('錯誤 : ' + errMsg)
+      }
     },
   }
 }

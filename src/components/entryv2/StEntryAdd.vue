@@ -191,20 +191,7 @@ export default {
           alert('執行新增失敗')
         }
       }, (error) => {
-        if (403 === error.response.status) {
-          EventBus.dispatch('logout')
-        }
-        let errMsg = 'Oops! Something went wrong'
-        if (error.response.data.message) {
-          errMsg = error.response.data.message
-        }
-        if (error.response.data.errors) {
-          error.response.data.errors.forEach(err => {
-            errMsg += '\n'
-            errMsg += err.defaultMessage
-          })
-        }
-        alert('錯誤 : ' + errMsg)
+        this.handleErr(error)
       })
     },
     cancelAddEntry () {
@@ -283,7 +270,24 @@ export default {
       this.fileDbDetail = []
       this.fileFdDetail = []
       this.pasteDbDetail = []
-    }
+    },
+    handleErr (error) {
+      if (403 === error.response.status) {
+        EventBus.dispatch('logout')
+      } else {
+        let errMsg = 'Oops! Something went wrong'
+        if (error.response.data.message) {
+          errMsg = error.response.data.message
+        }
+        if (error.response.data.errors) {
+          error.response.data.errors.forEach(err => {
+            errMsg += '\n'
+            errMsg += err.defaultMessage
+          })
+        }
+        alert('錯誤 : ' + errMsg)
+      }
+    },
   }
 }
 </script>
