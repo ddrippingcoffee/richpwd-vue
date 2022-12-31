@@ -15,6 +15,9 @@
       </small>
     </div>
     <div v-for="(dtl,dtlIndex) in currData.stDtlList" :key="dtlIndex">
+      <!-- 日期資訊 -->
+      <!-- 日期資訊 -->
+      <!-- 日期資訊 -->
       <div v-if="'date' === dtl.dtlTy">
         <p class="mb-1">{{ dtl.dtlBrf }} : <strong>{{ dtl.dtlInfo }}</strong></p>
         <small v-if="dtl.dtlDes">
@@ -26,6 +29,9 @@
           ></textarea>
         </small>
       </div>
+      <!-- 筆記資訊 -->
+      <!-- 筆記資訊 -->
+      <!-- 筆記資訊 -->
       <div v-if="'note' === dtl.dtlTy">
         <p class="mb-1">Brief : <strong>{{ dtl.dtlBrf }}</strong></p>
         <p class="mb-1" v-if="dtl.dtlInfo">Info : {{ dtl.dtlInfo }}</p>
@@ -38,6 +44,9 @@
           ></textarea>
         </small>
       </div>
+      <!-- 連結資訊 -->
+      <!-- 連結資訊 -->
+      <!-- 連結資訊 -->
       <div v-if="'link' === dtl.dtlTy">
         <p class="mb-1"><a :href="dtl.dtlInfo" target="_blank">{{ dtl.dtlBrf }}</a></p>
         <small v-if="dtl.dtlDes">
