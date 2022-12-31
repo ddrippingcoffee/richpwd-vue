@@ -1,11 +1,15 @@
 <template>
   <div :hidden="isPageEmpty">
-    <ul class="list-group">
+    <div class="custom-control custom-switch">
+      <input type="checkbox" class="custom-control-input" id="customSwitch1" @change="hideOldEntry">
+      <label class="custom-control-label" for="customSwitch1">僅顯示 Active</label>
+    </div>
+    <ul class="list-group mt-2">
       <li class="list-group-item fa-1x font-weight-bold"
           v-for="(entry, index) in currEntryInfo" :key="index"
           :class="{ active: index === currIndex }"
           :style="[index !== currIndex && entry.delDtm === null ? {'background': '#f5f6fa','color': '#000000'} : {'':''}]"
-          @click="setActiveEntry(entry, index)">
+          @click="setActiveEntry(entry, index)" :hidden="isOldHidden && entry.delDtm">
         {{ entry.dtmMsg }} <small class="float-right" v-if="entry.delDtm">舊</small>
       </li>
     </ul>
@@ -41,6 +45,7 @@ export default {
       page: 1,
       pageSize: 0,
       isPageEmpty: true,
+      isOldHidden: false,
     }
   },
   components: {
@@ -112,6 +117,9 @@ export default {
         msg += link + ' link'
       }
       return msg
+    },
+    hideOldEntry () {
+      this.isOldHidden = !this.isOldHidden
     },
     handlePageChange (value) {
       this.page = value
