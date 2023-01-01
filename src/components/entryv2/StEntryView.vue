@@ -66,13 +66,27 @@
       <!-- FD 資料 -->
       <div v-for="(fileFdInfo, fileFdInfoIndex) in currData.entryFileInfo.fileFdInfoList"
            :key="fileFdInfoIndex" class="d-inline-block">
+        <!-- FOLDER IMG -->
+        <!-- FOLDER IMG -->
+        <!-- FOLDER IMG -->
         <img v-if="fileFdInfo.base64ImgStr"
              :alt="fileFdInfo.fdFileNm"
              :src="fileFdInfo.base64ImgStr"
              :title="fileFdInfo.fdFileNm" width="150"
              @mousemove="zoomIn" @mouseout="zoomOut"/>
+        <!-- PDF -->
+        <!-- PDF -->
+        <!-- PDF -->
+        <span v-else-if="fileFdInfo.base64PdfStr"
+              class="btn btn-outline-info"
+              @click="openPdfWin(fileFdInfo.base64PdfStr)">
+          開啟 {{ fileFdInfo.fdFileNm }}
+        </span>
+        <!-- 其他資料 -->
+        <!-- 其他資料 -->
+        <!-- 其他資料 -->
         <span v-else class="btn btn-outline-info mt-2" @click="downloadFileFd(fileFdInfo)">
-          {{ fileFdInfo.fdFileNm }}
+          下載 {{ fileFdInfo.fdFileNm }}
         </span>
       </div>
       <!-- DB 資料 -->
@@ -80,6 +94,9 @@
       <!-- DB 資料 -->
       <div v-for="(fileDbInfo, fileDbInfoIndex) in currData.entryFileInfo.fileDbInfoList"
            :key="fileDbInfoIndex">
+        <!-- DB IMG -->
+        <!-- DB IMG -->
+        <!-- DB IMG -->
         <figure class="figure">
           <img class="figure-img img-fluid rounded"
                :alt="fileDbInfo.dbFileNm" :src="fileDbInfo.base64ImgStr">
@@ -134,11 +151,17 @@ export default {
       .then(() => {
         entry.entryFileInfo.fileFdInfoList.forEach(fdInfo => {
           fdInfo['fdFileNm'] = fdInfo['fdFileNm'].substring(15)
-          if ('image' === fdInfo.fdFileTy.substring(0, 5))
+          if ('image' === fdInfo.fdFileTy.substring(0, 5)) {
             this.displayFdImg(fdInfo.uid)
             .then((res) => {
               fdInfo.base64ImgStr = res
             })
+          } else if ('application' === fdInfo.fdFileTy.substring(0, 11)) {
+            this.displayFdImg(fdInfo.uid)
+            .then((res) => {
+              fdInfo.base64PdfStr = res
+            })
+          }
         })
       })
       .then(() => {
@@ -232,7 +255,13 @@ export default {
         alert('錯誤 : ' + errMsg)
       }
     },
-  }
+    openPdfWin (baseStr) {
+      let win = window.open('')
+      win.document.body.style.margin = '0px'
+      win.document.body.innerHTML =
+          '<iframe src="' + baseStr + '" style="border-width: 0; width:100%; height:100%;" allowfullscreen></iframe>'
+    },
+  },
 }
 </script>
 
