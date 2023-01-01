@@ -151,6 +151,20 @@ export default {
       pasteDbDetail: [],
     }
   },
+  created () {
+    // 註冊新增頁 Shift + Q 鍵取消新增
+    window.addEventListener('keyup', (e) => {
+      if (this.isEntryAdding && e.shiftKey && 'Q' === e.key) {
+        this.cancelAddEntry()
+      }
+    })
+    // 註冊新增頁 Shift + S 鍵確定新增
+    window.addEventListener('keyup', (e) => {
+      if (this.isEntryAdding && e.shiftKey && 'S' === e.key) {
+        this.saveEntry()
+      }
+    })
+  },
   methods: {
     setAddingPage () {
       this.resetEntry()
@@ -158,6 +172,9 @@ export default {
       this.$emit('isEntryAdding', this.isEntryAdding)
     },
     saveEntry () {
+      if (!confirm('確定儲存?')) {
+        return
+      }
       const formData = new FormData()
       let newEntry = {
         'symb': this.symb,
@@ -195,8 +212,10 @@ export default {
       })
     },
     cancelAddEntry () {
-      this.isEntryAdding = false
-      this.$emit('isEntryAdding', this.isEntryAdding)
+      if (confirm('確定取消?')) {
+        this.isEntryAdding = false
+        this.$emit('isEntryAdding', this.isEntryAdding)
+      }
     },
     addDtl () {
       this.stDtlList.push({ dtlTy: '', dtlBrf: '', dtlInfo: '', dtlDes: '' })
