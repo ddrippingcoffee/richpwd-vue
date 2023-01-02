@@ -106,9 +106,32 @@
           </div>
         </div>
         <div class="col-4">
+          <!-- FD 資料 -->
+          <!-- FD 資料 -->
+          <!-- FD 資料 -->
           <div v-if="0 !== fileFdDetail.length">
-            <div class="mt-2" v-for="(img, counter) in fileFdDetail" :key="counter">
-              <small>{{ img.fileName }}</small>
+            <div class="mt-2" v-for="(fileFd, counter) in fileFdDetail" :key="counter">
+              <!-- FOLDER IMG -->
+              <!-- FOLDER IMG -->
+              <!-- FOLDER IMG -->
+              <img v-if="fileFd.imgUrl"
+                   :alt="fileFd.fileName"
+                   :src="fileFd.imgUrl"
+                   :title="fileFd.fileName"
+                   width="150"
+                   @mousemove="zoomIn" @mouseout="zoomOut"/>
+              <!-- FOLDER PDF -->
+              <!-- FOLDER PDF -->
+              <!-- FOLDER PDF -->
+              <span v-else-if="fileFd.pdfUrl"
+                    class="btn btn-outline-info"
+                    @click="openPdfWin(fileFd.pdfUrl)">
+                開啟 {{ fileFd.fileName }}
+              </span>
+              <!-- 其他資料 -->
+              <!-- 其他資料 -->
+              <!-- 其他資料 -->
+              <small v-else>{{ fileFd.fileName }}</small>
               <div class="float-right">
                 <span class="btn-sm btn-outline-danger" @click="deleteFdBtnImg(counter)">Delete</span>
               </div>
@@ -265,10 +288,24 @@ export default {
       let newFileList = Array.from(event.target.files)
       this.fileFdDetail.splice(0, this.fileFdDetail.length)
       for (let i = 0; i < newFileList.length; i++) {
-        this.fileFdDetail.push({
-          fileName: newFileList[i].name,
-          fileObj: newFileList[i]
-        })
+        if ('image' === newFileList[i].type.substring(0, 5)) {
+          this.fileFdDetail.push({
+            fileName: newFileList[i].name,
+            fileObj: newFileList[i],
+            imgUrl: URL.createObjectURL(newFileList[i]),
+          })
+        } else if ('application/pdf' === newFileList[i].type) {
+          this.fileFdDetail.push({
+            fileName: newFileList[i].name,
+            fileObj: newFileList[i],
+            pdfUrl: URL.createObjectURL(newFileList[i]),
+          })
+        } else {
+          this.fileFdDetail.push({
+            fileName: newFileList[i].name,
+            fileObj: newFileList[i]
+          })
+        }
       }
     },
     getTimeStamp (dt) {
@@ -282,6 +319,12 @@ export default {
     },
     zoomOut () {
       this.$emit('imgEvent', {})
+    },
+    openPdfWin (baseStr) {
+      let win = window.open('')
+      win.document.body.style.margin = '0px'
+      win.document.body.innerHTML =
+          '<iframe src="' + baseStr + '" style="border-width: 0; width:100%; height:100%;" allowfullscreen></iframe>'
     },
     resetEntry () {
       this.symb = ''
