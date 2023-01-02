@@ -49,10 +49,6 @@ class StEntryService {
         return api.get('/entry/filefd/' + fileUid, { responseType: 'blob' })
     }
 
-    getFileDbImg64 (fileUid) {
-        return api.get('/entry/filedb64/' + fileUid)
-    }
-
     getFileFd64 (fileUid) {
         return api.get('/entry/filefd64/' + fileUid)
     }

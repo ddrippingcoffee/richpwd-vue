@@ -63,16 +63,16 @@
       </div>
       <!-- 圖檔 -->
       <div class="mt-2 input-group">
-        <div class="input-group col-4">
+        <div class="input-group col-6">
           <div class="input-group col-8 pl-0">
             <span class="input-group-text"><font-awesome-icon icon="images"/></span>
             <input class="form-control" @paste="pasteImg" accept="image/*" placeholder="貼上"/>
           </div>
           <div class="col-4 m-auto">
-            <h6>總 {{ pasteDbDetail.length }}</h6>
+            <h6>總 {{ pasteDetail.length }}</h6>
           </div>
         </div>
-        <div class="input-group col-4">
+        <div class="input-group col-6">
           <div class="input-group col-6">
             <label for="fileXlsx" class="btn btn-info mb-0">檔案</label>
             <input id="fileXlsx" type="file" multiple @click="cleanVal" @change="selectFile"
@@ -83,29 +83,19 @@
             <h6>總 {{ fileFdDetail.length }}</h6>
           </div>
         </div>
-        <div class="input-group col-4">
-          <div class="input-group col-6">
-            <label for="fileImg" class="btn btn-info mb-0">圖檔</label>
-            <input id="fileImg" type="file" multiple @click="cleanVal" @change="selectImg" style="display:none;"
-                   accept="image/*"/>
-          </div>
-          <div class="col-6 m-auto">
-            <h6>總 {{ fileDbDetail.length }}</h6>
-          </div>
-        </div>
       </div>
       <div class="mt-2 input-group">
-        <div class="col-4">
-          <div v-if="0 !== pasteDbDetail.length">
-            <div class="mt-2" v-for="(img, counter) in pasteDbDetail" :key="counter">
+        <div class="col-6">
+          <div v-if="0 !== pasteDetail.length">
+            <div class="mt-2" v-for="(img, counter) in pasteDetail" :key="counter">
               <small>{{ img.fileName }}</small>
               <img :alt="img.fileName" :src="img.fileUrl" :title="img.fileName" width="150"
                    @mousemove="zoomIn" @mouseout="zoomOut"/>
-              <span class="btn-sm btn-outline-danger" @click="deleteDbPasteImg(counter)">Delete</span>
+              <span class="btn-sm btn-outline-danger" @click="deletePaste(counter)">Delete</span>
             </div>
           </div>
         </div>
-        <div class="col-4">
+        <div class="col-6">
           <!-- FD 資料 -->
           <!-- FD 資料 -->
           <!-- FD 資料 -->
@@ -133,19 +123,7 @@
               <!-- 其他資料 -->
               <small v-else>{{ fileFd.fileName }}</small>
               <div class="float-right">
-                <span class="btn-sm btn-outline-danger" @click="deleteFdBtnImg(counter)">Delete</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-4">
-          <div v-if="0 !== fileDbDetail.length">
-            <div class="mt-2" v-for="(img, counter) in fileDbDetail" :key="counter">
-              <small>{{ img.fileName }}</small>
-              <img :alt="img.fileName" :src="img.fileUrl" :title="img.fileName" width="150"
-                   @mousemove="zoomIn" @mouseout="zoomOut"/>
-              <div class="float-right">
-                <span class="btn-sm btn-outline-danger" @click="deleteDbBtnImg(counter)">Delete</span>
+                <span class="btn-sm btn-outline-danger" @click="deleteFd(counter)">Delete</span>
               </div>
             </div>
           </div>
@@ -169,9 +147,8 @@ export default {
       isEntryAdding: false,
       symb: '',
       stDtlList: [{ dtlTy: '', dtlBrf: '', dtlInfo: '', dtlDes: '' }],
-      fileDbDetail: [],
       fileFdDetail: [],
-      pasteDbDetail: [],
+      pasteDetail: [],
     }
   },
   created () {
@@ -206,18 +183,13 @@ export default {
       const json = JSON.stringify(newEntry)
       const blob = new Blob([json], { type: 'application/json' })
       formData.append('entryJsonStr', blob)
-      // 圖片資料存 DB
-      let tempDbFiles = toRaw(this.fileDbDetail)
-      for (let i = 0; i < tempDbFiles.length; i++) {
-        formData.append('fileDbs', tempDbFiles[i]['fileObj'])
-      }
-      // 資料放 Folder
+      // 資料
       let tempFdFiles = toRaw(this.fileFdDetail)
       for (let i = 0; i < tempFdFiles.length; i++) {
         formData.append('fileFds', tempFdFiles[i]['fileObj'])
       }
-      // Paste 放 Folder
-      let tempFdPaste = toRaw(this.pasteDbDetail)
+      // Paste Img
+      let tempFdPaste = toRaw(this.pasteDetail)
       for (let i = 0; i < tempFdPaste.length; i++) {
         formData.append('fileFds', tempFdPaste[i]['fileObj'])
       }
@@ -246,13 +218,10 @@ export default {
     deleteDtl (counter) {
       this.stDtlList.splice(counter, 1)
     },
-    deleteDbPasteImg (counter) {
-      this.pasteDbDetail.splice(counter, 1)
+    deletePaste (counter) {
+      this.pasteDetail.splice(counter, 1)
     },
-    deleteDbBtnImg (counter) {
-      this.fileDbDetail.splice(counter, 1)
-    },
-    deleteFdBtnImg (counter) {
+    deleteFd (counter) {
       this.fileFdDetail.splice(counter, 1)
     },
     cleanVal (event) {
@@ -264,24 +233,13 @@ export default {
       let items = event.clipboardData.items
       if (items[0].type.indexOf('image') !== -1) {
         let blob = items[0].getAsFile()
-        this.pasteDbDetail.push({
+        this.pasteDetail.push({
           fileName: 'paste_' + this.getTimeStamp(new Date()),
           fileUrl: URL.createObjectURL(blob),
           fileObj: blob
         })
       } else {
         alert('非圖片')
-      }
-    },
-    selectImg (event) {
-      let newFileList = Array.from(event.target.files)
-      this.fileDbDetail.splice(0, this.fileDbDetail.length)
-      for (let i = 0; i < newFileList.length; i++) {
-        this.fileDbDetail.push({
-          fileName: newFileList[i].name,
-          fileUrl: URL.createObjectURL(newFileList[i]),
-          fileObj: newFileList[i]
-        })
       }
     },
     selectFile (event) {
@@ -329,9 +287,8 @@ export default {
     resetEntry () {
       this.symb = ''
       this.stDtlList = [{ dtlTy: '', dtlBrf: '', dtlInfo: '', dtlDes: '' }]
-      this.fileDbDetail = []
       this.fileFdDetail = []
-      this.pasteDbDetail = []
+      this.pasteDetail = []
     },
     handleErr (error) {
       if (403 === error.response.status) {

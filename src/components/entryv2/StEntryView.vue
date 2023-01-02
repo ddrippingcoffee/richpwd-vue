@@ -93,20 +93,6 @@
           下載 {{ fileFdInfo.fdFileNm }}
         </span>
       </div>
-      <!-- DB 資料 -->
-      <!-- DB 資料 -->
-      <!-- DB 資料 -->
-      <div v-for="(fileDbInfo, fileDbInfoIndex) in currData.entryFileInfo.fileDbInfoList"
-           :key="fileDbInfoIndex">
-        <!-- DB IMG -->
-        <!-- DB IMG -->
-        <!-- DB IMG -->
-        <figure class="figure">
-          <img class="figure-img img-fluid rounded"
-               :alt="fileDbInfo.dbFileNm" :src="fileDbInfo.base64ImgStr">
-          <figcaption class="figure-caption">{{ fileDbInfo.dbFileNm }}</figcaption>
-        </figure>
-      </div>
     </div>
   </div>
 </template>
@@ -144,15 +130,6 @@ export default {
         this.handleErr(error)
       })
       .then(() => {
-        entry.entryFileInfo.fileDbInfoList.forEach(dbInfo => {
-          if ('image' === dbInfo.dbFileTy.substring(0, 5))
-            this.displayDbImg(dbInfo.uid)
-            .then((res) => {
-              dbInfo.base64ImgStr = res
-            })
-        })
-      })
-      .then(() => {
         entry.entryFileInfo.fileFdInfoList.forEach(fdInfo => {
           fdInfo['fdFileNm'] = fdInfo['fdFileNm'].substring(15)
           if ('image' === fdInfo.fdFileTy.substring(0, 5)) {
@@ -171,15 +148,6 @@ export default {
       .then(() => {
         // 檢查用
         // console.log(entry.entryFileInfo.fileFdInfoList)
-        // console.log(entry.entryFileInfo.fileDbInfoList)
-      })
-    },
-    displayDbImg (uid) {
-      return StEntryService.getFileDbImg64(uid)
-      .then((res) => {
-        return res.data
-      }, (error) => {
-        this.handleErr(error)
       })
     },
     displayFd (uid) {
