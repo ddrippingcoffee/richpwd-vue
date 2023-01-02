@@ -53,7 +53,7 @@ class StEntryService {
         return api.get('/entry/filedb64/' + fileUid)
     }
 
-    getFileFdImg64 (fileUid) {
+    getFileFd64 (fileUid) {
         return api.get('/entry/filefd64/' + fileUid)
     }
 }

@@ -74,14 +74,18 @@
              :src="fileFdInfo.base64ImgStr"
              :title="fileFdInfo.fdFileNm" width="150"
              @mousemove="zoomIn" @mouseout="zoomOut"/>
-        <!-- PDF -->
-        <!-- PDF -->
-        <!-- PDF -->
-        <span v-else-if="fileFdInfo.base64PdfStr"
-              class="btn btn-outline-info"
-              @click="openPdfWin(fileFdInfo.base64PdfStr)">
-          開啟 {{ fileFdInfo.fdFileNm }}
-        </span>
+        <!-- FOLDER PDF -->
+        <!-- FOLDER PDF -->
+        <!-- FOLDER PDF -->
+        <div v-else-if="fileFdInfo.base64PdfStr">
+          <span class="btn btn-outline-info"
+                @click="openPdfWin(fileFdInfo.base64PdfStr)">
+            檢視 PDF {{ fileFdInfo.fdFileNm }}
+          </span>
+          <span class="btn btn-outline-info mt-2" @click="downloadFileFd(fileFdInfo)">
+            下載 PDF {{ fileFdInfo.fdFileNm }}
+          </span>
+        </div>
         <!-- 其他資料 -->
         <!-- 其他資料 -->
         <!-- 其他資料 -->
@@ -152,12 +156,12 @@ export default {
         entry.entryFileInfo.fileFdInfoList.forEach(fdInfo => {
           fdInfo['fdFileNm'] = fdInfo['fdFileNm'].substring(15)
           if ('image' === fdInfo.fdFileTy.substring(0, 5)) {
-            this.displayFdImg(fdInfo.uid)
+            this.displayFd(fdInfo.uid)
             .then((res) => {
               fdInfo.base64ImgStr = res
             })
           } else if ('application' === fdInfo.fdFileTy.substring(0, 11)) {
-            this.displayFdImg(fdInfo.uid)
+            this.displayFd(fdInfo.uid)
             .then((res) => {
               fdInfo.base64PdfStr = res
             })
@@ -178,8 +182,8 @@ export default {
         this.handleErr(error)
       })
     },
-    displayFdImg (uid) {
-      return StEntryService.getFileFdImg64(uid)
+    displayFd (uid) {
+      return StEntryService.getFileFd64(uid)
       .then((res) => {
         return res.data
       }, (error) => {
