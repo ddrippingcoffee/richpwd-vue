@@ -72,7 +72,7 @@
                 :class="`dtl_${counter + 1}`"
                 id="basic-addon1">敘述</span>
           <textarea class="form-control" type="text" placeholder="For Detail Description"
-                    style="overflow-y:hidden;"
+                    style="overflow-y:hidden;height:36px"
                     :class="'text_' + (counter + 1)"
                     @input="resize($event,(counter + 1))"
                     v-model.lazy="detail.dtlDes"></textarea>
@@ -313,6 +313,7 @@ export default {
     },
     resize (event, tagNum) {
       let ele = document.getElementsByClassName('text_' + tagNum)[0]
+      ele.style.height = 'auto'
       ele.style.height = event.target.scrollHeight + 'px'
     },
     resetEntry () {
