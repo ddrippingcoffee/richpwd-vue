@@ -22,25 +22,32 @@
       </div>
       <div v-for="(detail, counter) in stDtlList"
            v-bind:key="counter">
-        <div class="w-100 mt-3 md-2">
+        <div class="w-100 mt-3 md-2" :class="`dtl_${counter + 1}`">
           <strong class="mr-3">
             <!-- 筆數 -->
             {{ counter + 1 }}.
           </strong>
           <span class="btn-sm btn-outline-danger float-right" @click="deleteDtl(counter)">Delete</span>
           <!-- 日期 -->
-          <input type="radio" :id="`date_${counter + 1}`" value="date" v-model="detail.dtlTy">
+          <input type="radio" value="date"
+                 :id="`date_${counter + 1}`" v-model="detail.dtlTy"
+                 @change="chgDtlType((counter + 1),'date')">
           <label class="mr-3" :for="`date_${counter + 1}`"> Date </label>
           <!-- 記事 -->
-          <input type="radio" :id="`note_${counter +1}`" value="note" v-model="detail.dtlTy">
+          <input type="radio" value="note"
+                 :id="`note_${counter +1}`" v-model="detail.dtlTy"
+                 @change="chgDtlType((counter + 1),'note')">
           <label class="mr-3" :for="`note_${counter +1}`"> Note </label>
           <!-- 連結 -->
-          <input type="radio" :id="`link_${counter + 1}`" value="link" v-model="detail.dtlTy">
+          <input type="radio" value="link"
+                 :id="`link_${counter + 1}`" v-model="detail.dtlTy"
+                 @change="chgDtlType((counter + 1),'link')">
           <label class="mr-3" :for="`link_${counter + 1}`"> Link </label>
         </div>
         <!-- 簡述 -->
         <div class="input-group mt-md-1">
           <span class="input-group-text justify-content-lg-center"
+                :class="`dtl_${counter + 1}`"
                 id="basic-addon1">簡述</span>
           <input class="form-control" type="text" placeholder="For Brief or Date Title or Url Title"
                  v-model.lazy="detail.dtlBrf">
@@ -48,6 +55,7 @@
         <!-- 資料 -->
         <div class="input-group mt-md-1">
           <span class="input-group-text justify-content-lg-center"
+                :class="`dtl_${counter + 1}`"
                 id="basic-addon1">資料</span>
           <input class="form-control" type="text" placeholder="For Information or Date Time or Url Link"
                  v-model.lazy="detail.dtlInfo">
@@ -55,6 +63,7 @@
         <!-- 敘述 -->
         <div class="input-group mt-md-1">
           <span class="input-group-text justify-content-lg-center"
+                :class="`dtl_${counter + 1}`"
                 id="basic-addon1">敘述</span>
           <textarea class="form-control" type="text"
                     placeholder="For Detail Description" rows="5"
@@ -149,6 +158,9 @@ export default {
       stDtlList: [{ dtlTy: '', dtlBrf: '', dtlInfo: '', dtlDes: '' }],
       fileFdDetail: [],
       pasteDetail: [],
+      dateColor: '#ffcccc',
+      noteColor: '#fde6ff',
+      linkColor: '#e3f7ff',
     }
   },
   created () {
@@ -283,6 +295,13 @@ export default {
       win.document.body.style.margin = '0px'
       win.document.body.innerHTML =
           '<iframe src="' + baseStr + '" style="border-width: 0; width:100%; height:100%;" allowfullscreen></iframe>'
+    },
+    chgDtlType (counter, val) {
+      let dtlColor = ('date' === val) ? this.dateColor : ('note' === val) ? this.noteColor : this.linkColor
+      let eleArr = document.getElementsByClassName('dtl_' + counter)
+      for (let i = 0; i < eleArr.length; i++) {
+        eleArr[i].style.backgroundColor = dtlColor
+      }
     },
     resetEntry () {
       this.symb = ''
