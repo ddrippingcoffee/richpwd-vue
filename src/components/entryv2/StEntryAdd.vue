@@ -166,7 +166,7 @@ export default {
       stDtlList: [{ dtlTy: '', dtlBrf: '', dtlInfo: '', dtlDes: '' }],
       fileFdDetail: [],
       pasteDetail: [],
-      dateColor: '#ffcccc',
+      dateColor: '#ffe8e8',
       noteColor: '#fde6ff',
       linkColor: '#e3f7ff',
     }

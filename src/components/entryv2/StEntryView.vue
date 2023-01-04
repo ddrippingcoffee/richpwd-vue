@@ -15,50 +15,64 @@
       </small>
     </div>
     <div v-for="(dtl,dtlIndex) in currData.stDtlList" :key="dtlIndex">
-      <!-- 日期資訊 -->
-      <!-- 日期資訊 -->
-      <!-- 日期資訊 -->
-      <div v-if="'date' === dtl.dtlTy">
-        <p class="mb-1">{{ dtl.dtlBrf }} : <strong>{{ dtl.dtlInfo }}</strong></p>
-        <small v-if="dtl.dtlDes">
-          Des :
-          <textarea class="form-control"
-                    v-model="dtl.dtlDes"
-                    :style="{height:dtl.customHeight}"
-                    disabled
-          ></textarea>
-        </small>
+      <div class="row">
+        <div class="col-12">
+          <!-- 日期資訊 -->
+          <!-- 日期資訊 -->
+          <!-- 日期資訊 -->
+          <div class="col-12" v-if="'date' === dtl.dtlTy"
+               :style="{'background-color':'#ffcccc'}">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">{{ dtl.dtlBrf }} : {{ dtl.dtlInfo }}</h5>
+                <p v-if="dtl.dtlDes" class="card-text">
+                  <textarea class="form-control"
+                            v-model="dtl.dtlDes" :style="{height:dtl.customHeight}"
+                            disabled>
+                  </textarea>
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- 筆記資訊 -->
+          <!-- 筆記資訊 -->
+          <!-- 筆記資訊 -->
+          <div class="col-12" v-if="'note' === dtl.dtlTy"
+               :style="{'background-color':'#fde6ff'}">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">{{ dtl.dtlBrf }}</h5>
+                <h6 class="card-title">{{ dtl.dtlInfo }}</h6>
+                <p v-if="dtl.dtlDes" class="card-text">
+                  <textarea class="form-control"
+                            v-model="dtl.dtlDes" :style="{height:dtl.customHeight}"
+                            disabled>
+                  </textarea>
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- 連結資訊 -->
+          <!-- 連結資訊 -->
+          <!-- 連結資訊 -->
+          <div class="col-12" v-if="'link' === dtl.dtlTy"
+               :style="{'background-color':'#e3f7ff'}">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">
+                  <a :href="dtl.dtlInfo" target="_blank">{{ dtl.dtlBrf }}</a>
+                </h5>
+                <p v-if="dtl.dtlDes" class="card-text">
+                  <textarea class="form-control"
+                            v-model="dtl.dtlDes" :style="{height:dtl.customHeight}"
+                            disabled>
+                  </textarea>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <!-- 筆記資訊 -->
-      <!-- 筆記資訊 -->
-      <!-- 筆記資訊 -->
-      <div v-if="'note' === dtl.dtlTy">
-        <p class="mb-1">Brief : <strong>{{ dtl.dtlBrf }}</strong></p>
-        <p class="mb-1" v-if="dtl.dtlInfo">Info : {{ dtl.dtlInfo }}</p>
-        <small v-if="dtl.dtlDes">
-          Des :
-          <textarea class="form-control"
-                    v-model="dtl.dtlDes"
-                    :style="{height:dtl.customHeight}"
-                    disabled
-          ></textarea>
-        </small>
-      </div>
-      <!-- 連結資訊 -->
-      <!-- 連結資訊 -->
-      <!-- 連結資訊 -->
-      <div v-if="'link' === dtl.dtlTy">
-        <p class="mb-1"><a :href="dtl.dtlInfo" target="_blank">{{ dtl.dtlBrf }}</a></p>
-        <small v-if="dtl.dtlDes">
-          Des :
-          <textarea class="form-control"
-                    v-model="dtl.dtlDes"
-                    :style="{height:dtl.customHeight}"
-                    disabled
-          ></textarea>
-        </small>
-      </div>
-      <hr class="w-50 align-content-center"/>
     </div>
     <div class="mt-2" v-if="undefined !== currData.entryFileInfo">
       <!-- FD 資料 -->
@@ -108,6 +122,9 @@ export default {
     return {
       currData: {},
       isViewEmpty: true,
+      dateColor: '#ffe8e8',
+      noteColor: '#fde6ff',
+      linkColor: '#e3f7ff',
     }
   },
   props: ['setViewHidden', 'viewHidden', 'setEntryData', 'entryData',],
