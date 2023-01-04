@@ -29,20 +29,26 @@
           </strong>
           <span class="btn-sm btn-outline-danger float-right" @click="deleteDtl(counter)">Delete</span>
           <!-- 日期 -->
-          <input type="radio" value="date"
-                 :id="`date_${counter + 1}`" v-model="detail.dtlTy"
-                 @change="chgDtlType((counter + 1),'date')">
-          <label class="mr-3" :for="`date_${counter + 1}`"> Date </label>
+          <div class="form-check form-check-inline">
+            <input type="radio" value="date" class="form-check-input"
+                   :id="`date_${counter + 1}`" v-model="detail.dtlTy"
+                   @change="chgDtlType((counter + 1),'date')">
+            <label class="form-check-label mr-3" :for="`date_${counter + 1}`"> Date </label>
+          </div>
           <!-- 記事 -->
-          <input type="radio" value="note"
-                 :id="`note_${counter +1}`" v-model="detail.dtlTy"
-                 @change="chgDtlType((counter + 1),'note')">
-          <label class="mr-3" :for="`note_${counter +1}`"> Note </label>
+          <div class="form-check form-check-inline">
+            <input type="radio" value="note" class="form-check-input"
+                   :id="`note_${counter +1}`" v-model="detail.dtlTy"
+                   @change="chgDtlType((counter + 1),'note')">
+            <label class="form-check-label mr-3" :for="`note_${counter +1}`"> Note </label>
+          </div>
           <!-- 連結 -->
-          <input type="radio" value="link"
-                 :id="`link_${counter + 1}`" v-model="detail.dtlTy"
-                 @change="chgDtlType((counter + 1),'link')">
-          <label class="mr-3" :for="`link_${counter + 1}`"> Link </label>
+          <div class="form-check form-check-inline">
+            <input type="radio" value="link" class="form-check-input"
+                   :id="`link_${counter + 1}`" v-model="detail.dtlTy"
+                   @change="chgDtlType((counter + 1),'link')">
+            <label class="form-check-label mr-3" :for="`link_${counter + 1}`"> Link </label>
+          </div>
         </div>
         <!-- 簡述 -->
         <div class="input-group mt-md-1">
