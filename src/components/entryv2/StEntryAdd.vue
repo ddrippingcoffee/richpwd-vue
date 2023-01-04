@@ -71,8 +71,10 @@
           <span class="input-group-text justify-content-lg-center"
                 :class="`dtl_${counter + 1}`"
                 id="basic-addon1">敘述</span>
-          <textarea class="form-control" type="text"
-                    placeholder="For Detail Description" rows="5"
+          <textarea class="form-control" type="text" placeholder="For Detail Description"
+                    style="overflow-y:hidden;"
+                    :class="'text_' + (counter + 1)"
+                    @input="resize($event,(counter + 1))"
                     v-model.lazy="detail.dtlDes"></textarea>
         </div>
       </div>
@@ -308,6 +310,10 @@ export default {
       for (let i = 0; i < eleArr.length; i++) {
         eleArr[i].style.backgroundColor = dtlColor
       }
+    },
+    resize (event, tagNum) {
+      let ele = document.getElementsByClassName('text_' + tagNum)[0]
+      ele.style.height = event.target.scrollHeight + 'px'
     },
     resetEntry () {
       this.symb = ''
