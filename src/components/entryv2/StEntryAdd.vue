@@ -227,7 +227,20 @@ export default {
       })
     },
     cancelAddEntry () {
-      if (confirm('確定取消?')) {
+      let isDtlNotEmpty = false
+      this.stDtlList.forEach(dtl => {
+        if ('' !== dtl.dtlBrf || '' !== dtl.dtlInfo || '' !== dtl.dtlDes) {
+          isDtlNotEmpty = true
+        }
+      })
+      if ('' !== this.symb || isDtlNotEmpty ||
+          0 !== this.fileFdDetail.length ||
+          0 !== this.pasteDetail.length) {
+        if (confirm('確定取消?')) {
+          this.isEntryAdding = false
+          this.$emit('isEntryAdding', this.isEntryAdding)
+        }
+      } else {
         this.isEntryAdding = false
         this.$emit('isEntryAdding', this.isEntryAdding)
       }
