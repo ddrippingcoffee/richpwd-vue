@@ -184,6 +184,12 @@ export default {
         this.saveEntry()
       }
     })
+    // 註冊新增頁 Alt + Insert 鍵 New Stock Detail
+    window.addEventListener('keyup', (e) => {
+      if (this.isEntryAdding && e.altKey && 'Insert' === e.key) {
+        this.addDtl()
+      }
+    })
   },
   methods: {
     setAddingPage () {
