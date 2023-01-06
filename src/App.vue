@@ -48,8 +48,18 @@
     <div v-if="currentUser" class="navbar-nav ml-auto">
       <li class="nav-item">
         <router-link to="/profile" class="nav-link">
-          <font-awesome-icon icon="user"/>
-          {{ currentUser.username }}
+          <div v-if="showAdminBoard" style="background-color: darkviolet;color: lightyellow">
+            ADMIN
+            <font-awesome-icon icon="crown"/>
+            {{ currentUser.username }}
+          </div>
+          <div v-else-if="!showAdminBoard && showModeratorBoard" style="color: aqua;">
+            {{ currentUser.username }}
+          </div>
+          <div v-else>
+            <font-awesome-icon icon="user"/>
+            {{ currentUser.username }}
+          </div>
         </router-link>
       </li>
       <li class="nav-item">
