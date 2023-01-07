@@ -25,12 +25,9 @@
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">{{ dtl.dtlBrf }} : {{ dtl.dtlInfo }}</h5>
-                <p v-if="dtl.dtlDes" class="card-text">
-                  <textarea class="form-control"
-                            v-model="dtl.dtlDes" :style="{height:dtl.customHeight}"
-                            disabled>
-                  </textarea>
-                </p>
+                <pre v-if="dtl.dtlDes" class="card-text"
+                     :style="{backgroundColor:'#e9ecef'}">{{ dtl.dtlDes }}
+                </pre>
               </div>
             </div>
           </div>
@@ -43,12 +40,9 @@
               <div class="card-body">
                 <h5 class="card-title">{{ dtl.dtlBrf }}</h5>
                 <h6 class="card-title">{{ dtl.dtlInfo }}</h6>
-                <p v-if="dtl.dtlDes" class="card-text">
-                  <textarea class="form-control"
-                            v-model="dtl.dtlDes" :style="{height:dtl.customHeight}"
-                            disabled>
-                  </textarea>
-                </p>
+                <pre v-if="dtl.dtlDes" class="card-text"
+                     :style="{backgroundColor:'#e9ecef'}">{{ dtl.dtlDes }}
+                </pre>
               </div>
             </div>
           </div>
@@ -62,12 +56,9 @@
                 <h5 class="card-title">
                   <a :href="dtl.dtlInfo" target="_blank">{{ dtl.dtlBrf }}</a>
                 </h5>
-                <p v-if="dtl.dtlDes" class="card-text">
-                  <textarea class="form-control"
-                            v-model="dtl.dtlDes" :style="{height:dtl.customHeight}"
-                            disabled>
-                  </textarea>
-                </p>
+                <pre v-if="dtl.dtlDes" class="card-text"
+                     :style="{backgroundColor:'#e9ecef'}">{{ dtl.dtlDes }}
+                </pre>
               </div>
             </div>
           </div>
@@ -141,7 +132,6 @@ export default {
       StEntryService.getEntryFileList(entry.symb, entry.c8tDtm)
       .then((res) => {
         entry.entryFileInfo = res.data
-        this.buildValue(entry)
         this.currData = entry
       }, (error) => {
         this.handleErr(error)
@@ -200,25 +190,6 @@ export default {
         })
       } else {
         alert('不刪除')
-      }
-    },
-    buildValue (entry) {
-      entry.stDtlList.forEach(dtl => {
-        this.setTextareaHeight(dtl)
-      })
-    },
-    setTextareaHeight (dtl) {
-      if (dtl.dtlDes) {
-        let newHeight = ''
-        let numOfLine = dtl.dtlDes.split(/\r\n|\r|\n/).length
-        if (1 === numOfLine) {
-          // 處理未斷行文字
-          let newLen = ((dtl.dtlDes.length / 60) + 1) * 30
-          newHeight = (newLen >= 40) ? newLen : 40
-        } else {
-          newHeight = (numOfLine * 32) + 1
-        }
-        dtl.customHeight = newHeight + 'px'
       }
     },
     zoomIn (event) {
