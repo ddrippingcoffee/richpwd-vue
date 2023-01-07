@@ -1,7 +1,7 @@
 <template>
   <div class="float-left">
     <button class="btn btn-outline-primary btn-sm"
-            v-if="this.roleArr.includes('ROLE_ADMIN')"
+            v-if="this.roleArr.includes('ROLE_USER')"
             @click="setAddingPage" :hidden="isEntryAdding">新增
     </button>
     <button class="btn btn-success float-right btn-sm"
