@@ -21,12 +21,12 @@
           <!-- 日期資訊 -->
           <!-- 日期資訊 -->
           <div class="col-12" v-if="'date' === dtl.dtlTy"
-               :style="{'background-color':'#ffcccc'}">
+               style="background-color: #ffcccc">
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">{{ dtl.dtlBrf }} : {{ dtl.dtlInfo }}</h5>
                 <pre v-if="dtl.dtlDes" class="card-text"
-                     :style="{backgroundColor:'#e9ecef'}">{{ dtl.dtlDes }}
+                     style="white-space: pre-wrap;background-color: #e9ecef;">{{ dtl.dtlDes }}
                 </pre>
               </div>
             </div>
@@ -35,13 +35,13 @@
           <!-- 筆記資訊 -->
           <!-- 筆記資訊 -->
           <div class="col-12" v-if="'note' === dtl.dtlTy"
-               :style="{'background-color':'#fde6ff'}">
+               style="background-color: #fde6ff">
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">{{ dtl.dtlBrf }}</h5>
                 <h6 class="card-title">{{ dtl.dtlInfo }}</h6>
                 <pre v-if="dtl.dtlDes" class="card-text"
-                     :style="{backgroundColor:'#e9ecef'}">{{ dtl.dtlDes }}
+                     style="white-space: pre-wrap;background-color: #e9ecef;">{{ dtl.dtlDes }}
                 </pre>
               </div>
             </div>
@@ -50,14 +50,14 @@
           <!-- 連結資訊 -->
           <!-- 連結資訊 -->
           <div class="col-12" v-if="'link' === dtl.dtlTy"
-               :style="{'background-color':'#e3f7ff'}">
+               style="background-color: #e3f7ff">
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">
                   <a :href="dtl.dtlInfo" target="_blank">{{ dtl.dtlBrf }}</a>
                 </h5>
                 <pre v-if="dtl.dtlDes" class="card-text"
-                     :style="{backgroundColor:'#e9ecef'}">{{ dtl.dtlDes }}
+                     style="white-space: pre-wrap;background-color: #e9ecef;">{{ dtl.dtlDes }}
                 </pre>
               </div>
             </div>
@@ -113,9 +113,6 @@ export default {
     return {
       currData: {},
       isViewEmpty: true,
-      dateColor: '#ffe8e8',
-      noteColor: '#fde6ff',
-      linkColor: '#e3f7ff',
     }
   },
   props: ['setViewHidden', 'viewHidden', 'setEntryData', 'entryData',],
