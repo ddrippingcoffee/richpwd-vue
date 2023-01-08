@@ -238,10 +238,12 @@ export default {
           0 !== this.fileFdDetail.length ||
           0 !== this.pasteDetail.length) {
         if (confirm('確定取消?')) {
+          this.stDtlList = []
           this.isEntryAdding = false
           this.$emit('isEntryAdding', this.isEntryAdding)
         }
       } else {
+        this.stDtlList = []
         this.isEntryAdding = false
         this.$emit('isEntryAdding', this.isEntryAdding)
       }
@@ -251,6 +253,9 @@ export default {
     },
     deleteDtl (counter) {
       this.stDtlList.splice(counter, 1)
+      this.stDtlList.forEach((e, index) => {
+        this.chgDtlType((index + 1), e.dtlTy)
+      })
     },
     deletePaste (counter) {
       this.pasteDetail.splice(counter, 1)
