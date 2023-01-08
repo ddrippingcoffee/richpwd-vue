@@ -10,8 +10,13 @@ import setupInterceptors from './services/setupInterceptors'
 
 setupInterceptors(store)
 
+import jQuery from 'jquery'
+
+window.$ = window.jQuery = jQuery
+
 createApp(App)
 .use(router)
 .use(store)
+.use(jQuery)
 .component('font-awesome-icon', FontAwesomeIcon)
 .mount('#app')
