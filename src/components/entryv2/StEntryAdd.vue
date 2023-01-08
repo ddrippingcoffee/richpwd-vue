@@ -157,6 +157,7 @@
 import { toRaw } from 'vue'
 import StEntryService from '@/services/stentry-service'
 import EventBus from '@/common/EventBus'
+import $ from 'jquery'
 
 export default {
   name: 'StEntryAdd',
@@ -169,9 +170,6 @@ export default {
       stDtlList: [{ dtlTy: '', dtlBrf: '', dtlInfo: '', dtlDes: '' }],
       fileFdDetail: [],
       pasteDetail: [],
-      dateColor: '#ffe8e8',
-      noteColor: '#fde6ff',
-      linkColor: '#e3f7ff',
     }
   },
   created () {
@@ -321,16 +319,11 @@ export default {
           '<iframe src="' + baseStr + '" style="border-width: 0; width:100%; height:100%;" allowfullscreen></iframe>'
     },
     chgDtlType (counter, val) {
-      let dtlColor = ('date' === val) ? this.dateColor : ('note' === val) ? this.noteColor : this.linkColor
-      let eleArr = document.getElementsByClassName('dtl_' + counter)
-      for (let i = 0; i < eleArr.length; i++) {
-        eleArr[i].style.backgroundColor = dtlColor
-      }
+      let dtlColor = ('date' === val) ? '#ffe8e8' : ('note' === val) ? '#fde6ff' : '#e3f7ff'
+      $('.dtl_' + counter).css('background-color', dtlColor)
     },
     resize (event, tagNum) {
-      let ele = document.getElementsByClassName('text_' + tagNum)[0]
-      ele.style.height = 'auto'
-      ele.style.height = event.target.scrollHeight + 'px'
+      $('.text_' + tagNum).first().css('height', 'auto').css('height', event.target.scrollHeight + 'px')
     },
     resetEntry () {
       this.symb = ''
