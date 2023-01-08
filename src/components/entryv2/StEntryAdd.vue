@@ -14,7 +14,7 @@
   <div :hidden="!isEntryAdding">
     <form>
       <div class="input-group mt-md-2">
-        <span class="btn btn-outline-secondary" w-25
+        <span class="btn btn-outline-secondary"
               @click="addDtl" style="cursor: pointer;">New Stock Detail</span>
         <span class="input-group-text w-25 justify-content-lg-center text-danger"
               id="basic-addon1">股市代號</span>
