@@ -173,12 +173,6 @@ export default {
     }
   },
   created () {
-    // 註冊新增頁 Shift + Q 鍵取消新增
-    window.addEventListener('keyup', (e) => {
-      if (this.isEntryAdding && e.shiftKey && 'Q' === e.key) {
-        this.cancelAddEntry()
-      }
-    })
     // 註冊新增頁 Alt + Insert 鍵 New Stock Detail
     window.addEventListener('keyup', (e) => {
       if (this.isEntryAdding && e.altKey && 'Insert' === e.key) {
