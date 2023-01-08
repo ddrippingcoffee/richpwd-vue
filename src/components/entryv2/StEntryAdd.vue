@@ -31,6 +31,7 @@
           <!-- 日期 -->
           <div class="form-check form-check-inline">
             <input type="radio" value="date" class="form-check-input"
+                   style="width: 20px;margin-left: auto;margin-right: auto;"
                    :id="`date_${counter + 1}`" v-model="detail.dtlTy"
                    @change="chgDtlType((counter + 1),'date')">
             <label class="form-check-label mr-3" :for="`date_${counter + 1}`"> Date </label>
@@ -38,6 +39,7 @@
           <!-- 記事 -->
           <div class="form-check form-check-inline">
             <input type="radio" value="note" class="form-check-input"
+                   style="width: 20px;margin-left: auto;margin-right: auto;"
                    :id="`note_${counter +1}`" v-model="detail.dtlTy"
                    @change="chgDtlType((counter + 1),'note')">
             <label class="form-check-label mr-3" :for="`note_${counter +1}`"> Note </label>
@@ -45,6 +47,7 @@
           <!-- 連結 -->
           <div class="form-check form-check-inline">
             <input type="radio" value="link" class="form-check-input"
+                   style="width: 20px;margin-left: auto;margin-right: auto;"
                    :id="`link_${counter + 1}`" v-model="detail.dtlTy"
                    @change="chgDtlType((counter + 1),'link')">
             <label class="form-check-label mr-3" :for="`link_${counter + 1}`"> Link </label>
