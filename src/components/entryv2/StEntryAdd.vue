@@ -178,12 +178,6 @@ export default {
         this.cancelAddEntry()
       }
     })
-    // 註冊新增頁 Shift + S 鍵確定新增
-    window.addEventListener('keyup', (e) => {
-      if (this.isEntryAdding && e.shiftKey && 'S' === e.key) {
-        this.saveEntry()
-      }
-    })
     // 註冊新增頁 Alt + Insert 鍵 New Stock Detail
     window.addEventListener('keyup', (e) => {
       if (this.isEntryAdding && e.altKey && 'Insert' === e.key) {
