@@ -1,11 +1,8 @@
 <template>
   <div :hidden="0 === Object.keys(currEvent).length"
-       :style="{
-          'float':'right','background-repeat':'no-repeat',
-          'width': windowWidthPx,'height': windowHeightPx,
-       }"
+       style="background-repeat: no-repeat;position: fixed;margin-right: 0.5%;"
+       :style="{'width': winWidthPx,'height': winHeightPx,}"
        class="overlay">
-    <!-- > border: 1px solid black; <-->
   </div>
 
 </template>
@@ -16,10 +13,8 @@ export default {
   data () {
     return {
       currEvent: {},
-      windowWidth: window.screen.width / 2.4,
-      windowHeight: window.screen.height / 1.4,
-      windowWidthPx: '',
-      windowHeightPx: '',
+      winWidthPx: '',
+      winHeightPx: '',
     }
   },
   props: ['getImgEvent', 'imgEvent',],
@@ -36,6 +31,8 @@ export default {
         let srcElement = this.currEvent.srcElement
         let naturalWidth = srcElement.naturalWidth
         let naturalHeight = srcElement.naturalHeight
+        let currWinWidth = (window.innerWidth / 2.4)
+        let currWinHeight = (window.innerHeight / 1.2)
 
         /* 取的 div 並設定背景圖 */
         let ele = document.getElementsByClassName('overlay')[0]
@@ -46,16 +43,16 @@ export default {
         ele.style.backgroundPosition = x + '% ' + y + '%'
 
         /* 設定 div width */
-        if (naturalWidth > this.windowWidth) {
-          this.windowWidthPx = this.windowWidth + 'px'
+        if (naturalWidth > currWinWidth) {
+          this.winWidthPx = (currWinWidth - 80) + 'px'
         } else {
-          this.windowWidthPx = naturalWidth + 'px'
+          this.winWidthPx = naturalWidth + 'px'
         }
         /* 設定 div height */
-        if (naturalHeight > this.windowHeight) {
-          this.windowHeightPx = this.windowHeight + 'px'
+        if (naturalHeight > currWinHeight) {
+          this.winHeightPx = currWinHeight + 'px'
         } else {
-          this.windowHeightPx = naturalHeight + 'px'
+          this.winHeightPx = naturalHeight + 'px'
         }
       }
     }
