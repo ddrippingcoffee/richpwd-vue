@@ -70,7 +70,7 @@
       </li>
     </div>
   </nav>
-  <div class="container-fluid">
+  <div class="container-fluid mb-3">
     <br/>
     <router-view/>
   </div>
